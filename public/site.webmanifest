@@ -1,0 +1,14 @@
+{
+  "name": "1px.com",
+  "short_name": "1px",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#1A1A2E",
+  "background_color": "#1A1A2E",
+  "display": "standalone"
+}

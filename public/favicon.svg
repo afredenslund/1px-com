@@ -1,4 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="4" fill="#1A1A2E"/>
-  <rect x="14" y="14" width="4" height="4" fill="#2563EB"/>
+  <rect width="32" height="32" rx="6" fill="#1A1A2E"/>
+
+  <!-- 3x3 pixel grid - visible at small sizes -->
+  <rect x="4"  y="4"  width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="12.5" y="4"  width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="21" y="4"  width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="4"  y="12.5" width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="12.5" y="12.5" width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="21" y="12.5" width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="4"  y="21" width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="12.5" y="21" width="7" height="7" rx="1" fill="#252542"/>
+  <rect x="21" y="21" width="7" height="7" rx="1" fill="#252542"/>
+
+  <!-- The ONE highlighted pixel - center -->
+  <rect x="12.5" y="12.5" width="7" height="7" rx="1" fill="#2563EB"/>
 </svg>
