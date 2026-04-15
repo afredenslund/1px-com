@@ -30,11 +30,14 @@ const ogImageAbsolute = new URL(ogImage, Astro.site).href;
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
 <meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content="#1A1A2E" />
 
 <!-- Open Graph -->
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageAbsolute} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content="1px.com" />
@@ -61,11 +64,17 @@ const ogImageAbsolute = new URL(ogImage, Astro.site).href;
   <script type="application/ld+json" set:html={JSON.stringify(s)} />
 ))}
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PTGMYXRG60"></script>
+<!-- Google Analytics (deferred to not block rendering) -->
+<link rel="preconnect" href="https://www.googletagmanager.com" />
 <script is:inline>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-PTGMYXRG60');
+  window.addEventListener('load', function() {
+    var s = document.createElement('script');
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-PTGMYXRG60';
+    s.async = true;
+    document.head.appendChild(s);
+  });
 </script>

@@ -223,7 +223,7 @@ pre code {
 }
 
 .domain-banner a {
-  color: var(--color-cta);
+  color: #FF6B6B;
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;
