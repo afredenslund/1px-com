@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "1px.com",
+    "url": "https://1px.com",
+    "description": "The story of the single pixel that built the early web. History, technical deep-dives, and the enduring legacy of 1px.",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "1px.com",
+    "url": "https://1px.com",
+    "logo": "https://1px.com/favicon.svg",
+  },
+];
+---
+
+<BaseLayout
+  title="1px.com — The Single Pixel That Shaped the Web"
+  description="The story of the 1px spacer GIF that powered early web design. Explore the history, modern CSS techniques, and the pixel unit that still defines the web."
+  schema={schema}
+>
+  <section class="hero">
+    <h1>1px<span style="color: var(--color-text-muted); font-weight: 300;">.com</span></h1>
+    <p class="subtitle">The single pixel that shaped the web</p>
+  </section>
+
+  <article>
+    <p>Before CSS existed, the entire visual web was held together by an invisible 1&times;1 pixel transparent GIF. Designers stretched it, duplicated it, and embedded it millions of times to build the layouts we take for granted today.</p>
+
+    <p><strong>1px</strong> is where that story lives. From the spacer GIF era of the late 1990s to the sub-pixel rendering challenges of modern retina displays, the single pixel remains the fundamental unit of everything we see on screen.</p>
+
+    <h2>Explore the World of 1px</h2>
+
+    <div class="content-grid">
+      <a href="/spacer-gif-history/" class="content-card">
+        <h3>The Spacer GIF Story</h3>
+        <p>How a 43-byte transparent image became the most important file on the early web, powering table-based layouts across millions of sites.</p>
+      </a>
+
+      <a href="/1px-css-borders/" class="content-card">
+        <h3>1px Borders in CSS</h3>
+        <p>The retina display problem, hairline rendering techniques, and why a single pixel border is still one of the hardest things in web development.</p>
+      </a>
+
+      <a href="/px-unit-explained/" class="content-card">
+        <h3>The PX Unit Explained</h3>
+        <p>A CSS pixel is not a physical pixel. Dive into what PX actually means, the rem vs px debate, and every other meaning of those two letters.</p>
+      </a>
+
+      <a href="/power-of-one/" class="content-card">
+        <h3>The Power of 1</h3>
+        <p>Why single-character domains command premium value, how "1" leads in every sorted list, and the brands that chose to start with one.</p>
+      </a>
+    </div>
+
+    <h2>Why 1px.com</h2>
+
+    <p>Three characters. Universal recognition. A domain that speaks directly to anyone who has ever written a line of HTML or CSS. <strong>1px.com</strong> is not just short and memorable — it carries meaning. It references the foundational building block of digital visual media: the pixel.</p>
+
+    <p>Whether as a brand for a design tool, a CSS framework, a creative agency, or a technical publication, <strong>1px.com</strong> signals precision, craft, and deep web heritage.</p>
+
+    <aside class="article-cta">
+      <p>This premium 3-character .com domain is available for purchase.</p>
+      <a href="https://forsale.godaddy.com/forsale/1px.com" class="cta-button" rel="noopener">Make an Offer on 1px.com</a>
+    </aside>
+  </article>
+</BaseLayout>

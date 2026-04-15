@@ -1,0 +1,35 @@
+---
+interface Props {
+  current: string;
+}
+
+const { current } = Astro.props;
+const currentURL = new URL(Astro.url.pathname, Astro.site).href;
+const homeURL = new URL('/', Astro.site).href;
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li aria-current="page">{current}</li>
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": homeURL
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": current,
+      "item": currentURL
+    }
+  ]
+})} />

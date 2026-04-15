@@ -1,0 +1,27 @@
+---
+interface Article {
+  href: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<nav class="related-articles" aria-label="Related articles">
+  <h2>Continue Reading</h2>
+  <ul>
+    {articles.map(({ href, title, description }) => (
+      <li>
+        <a href={href}>
+          <strong>{title}</strong>
+          <span>{description}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedArticles from '../../components/RelatedArticles.astro';
+
+const publishDate = '2026-04-15';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "1px Borders in CSS: Hairline Rendering and Retina Displays",
+    "description": "A technical guide to rendering true 1px borders on retina displays, including hairline techniques, sub-pixel rendering, and cross-browser solutions.",
+    "image": "https://1px.com/og-image.png",
+    "datePublished": publishDate,
+    "dateModified": publishDate,
+    "author": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "publisher": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "mainEntityOfPage": "https://1px.com/1px-css-borders/",
+  },
+];
+
+const relatedArticles = [
+  {
+    href: '/spacer-gif-history/',
+    title: 'The Spacer GIF Story',
+    description: 'The invisible 1x1 pixel that powered a decade of web layouts before CSS.',
+  },
+  {
+    href: '/px-unit-explained/',
+    title: 'The PX Unit Explained',
+    description: 'What a CSS pixel actually means and how it differs from a physical screen pixel.',
+  },
+  {
+    href: '/power-of-one/',
+    title: 'The Power of 1',
+    description: 'Why the number one commands attention in branding, domains, and beyond.',
+  },
+];
+
+const codeDpr = `<code>/* Target high-DPI screens */
+@media (min-resolution: 2dppx) {
+  .border-element {
+    border-width: 0.5px;
+  }
+}</code>`;
+
+const codeHairline = `<code>.hairline {
+  border: 0.5px solid #d0d0d0;
+}</code>`;
+
+const codeHairlineFallback = `<code>.hairline {
+  border: 1px solid #d0d0d0;
+}
+
+@media (min-resolution: 2dppx) {
+  .hairline {
+    border-width: 0.5px;
+  }
+}</code>`;
+
+const codeTransform = `<code>.hairline-bottom {
+  position: relative;
+}
+
+.hairline-bottom::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #d0d0d0;
+  transform: scaleY(0.5);
+  transform-origin: bottom;
+}</code>`;
+
+const codeBoxShadow = `<code>.hairline-shadow {
+  box-shadow: 0 0 0 0.5px #d0d0d0;
+}</code>`;
+
+const codeBorderImage = `<code>.hairline-gradient {
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(to bottom, transparent 50%, #d0d0d0 50%) 0 0 1 0;
+}</code>`;
+---
+
+<BaseLayout
+  title="1px Borders in CSS: Hairline Rendering and Retina Displays"
+  description="A technical guide to rendering true 1px borders on high-DPI screens. Covers hairline techniques, the retina border problem, sub-pixel rendering, and cross-browser solutions."
+  ogType="article"
+  publishDate={publishDate}
+  schema={schema}
+>
+  <Breadcrumbs current="1px Borders in CSS" />
+
+  <article>
+    <h1>1px Borders in CSS: The Definitive Guide to Hairline Rendering</h1>
+
+    <p>The declaration <code>border: 1px solid</code> is one of the most commonly written lines in CSS. It is also one of the most misunderstood. On a standard display, 1px renders as a single row or column of screen pixels. On a high-density retina display, that same 1px declaration produces a line that is 2 or 3 physical pixels wide — visibly thicker and heavier than the designer intended.</p>
+
+    <p>This is the 1px border problem, and it has frustrated web developers since Apple introduced the first Retina display in 2010. This guide covers what causes it, why it matters, and the techniques available to render true hairline borders across modern devices.</p>
+
+    <aside class="article-cta">
+      <p>The domain <strong>1px.com</strong> is available for purchase.</p>
+      <a href="https://forsale.godaddy.com/forsale/1px.com" class="cta-button" rel="noopener">Make an Offer</a>
+    </aside>
+
+    <h2>Why 1px Is Not 1 Pixel</h2>
+
+    <p>In CSS, <code>1px</code> is a <strong>logical unit</strong>, not a physical one. The CSS specification defines 1px as 1/96th of an inch at a nominal arm's length. On a 1x display (96 DPI), one CSS pixel maps to one hardware pixel. On a 2x Retina display, one CSS pixel maps to a 2&times;2 block of hardware pixels. On a 3x display, it maps to 3&times;3.</p>
+
+    <p>This means <code>border: 1px solid #000</code> renders as:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Device Pixel Ratio</th>
+          <th>CSS 1px Width</th>
+          <th>Physical Pixels</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1x (standard)</td>
+          <td>1px</td>
+          <td>1 pixel</td>
+        </tr>
+        <tr>
+          <td>2x (Retina)</td>
+          <td>1px</td>
+          <td>2 pixels</td>
+        </tr>
+        <tr>
+          <td>3x (iPhone Plus/Pro)</td>
+          <td>1px</td>
+          <td>3 pixels</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The visual difference is significant. On a 2x display, a <code>1px</code> border looks twice as thick as it would on a standard display. Compared to native iOS or Android UI elements — which render true 1-physical-pixel dividers — CSS borders appear heavy and clunky.</p>
+
+    <h2>The Device Pixel Ratio</h2>
+
+    <p>The <strong>device pixel ratio</strong> (DPR) is the ratio between physical pixels and CSS pixels. You can query it in JavaScript via <code>window.devicePixelRatio</code> and in CSS via the <code>resolution</code> media feature or the older <code>-webkit-device-pixel-ratio</code>.</p>
+
+    <pre set:html={codeDpr} />
+
+    <p>Understanding DPR is essential for any technique that attempts to render sub-CSS-pixel borders. The goal is always the same: make the border occupy exactly 1 physical pixel, regardless of the device's pixel density.</p>
+
+    <h2>Hairline Border Techniques</h2>
+
+    <h3>The 0.5px Border</h3>
+
+    <p>The most straightforward approach is to simply declare a half-pixel border:</p>
+
+    <pre set:html={codeHairline} />
+
+    <p>On a 2x display, <code>0.5px</code> maps to exactly 1 physical pixel. This works reliably in <strong>Safari</strong> (both macOS and iOS) and in <strong>Chrome</strong> on high-DPI screens. However, some older browsers round <code>0.5px</code> down to <code>0px</code>, making the border disappear entirely.</p>
+
+    <p>The safest approach is to use a media query to apply <code>0.5px</code> only on high-DPI devices:</p>
+
+    <pre set:html={codeHairlineFallback} />
+
+    <h3>The Transform Scale Technique</h3>
+
+    <p>A widely used approach that works across all modern browsers involves drawing a 1px border and then scaling it down by 50%:</p>
+
+    <pre set:html={codeTransform} />
+
+    <p>This creates a pseudo-element with a 1px height, then scales it to 0.5px in the vertical axis. On a 2x display, the result is a 1-physical-pixel line. The technique extends to 3x displays by using <code>scaleY(0.333)</code>.</p>
+
+    <h3>The Box-Shadow Approach</h3>
+
+    <p>Box shadows can simulate borders without occupying layout space:</p>
+
+    <pre set:html={codeBoxShadow} />
+
+    <p>This creates an inset shadow that mimics a border. The advantage is simplicity. The disadvantage is that box-shadow rendering can differ subtly from border rendering, especially at corners and with border-radius.</p>
+
+    <h3>The Border-Image Gradient</h3>
+
+    <p>Using a linear gradient as a border image allows pixel-precise control:</p>
+
+    <pre set:html={codeBorderImage} />
+
+    <p>This draws the border color only in the bottom half of the 1px space, resulting in a 0.5px visual line on 2x displays. It is a clever use of the border-image specification but can be hard to maintain and does not work with border-radius.</p>
+
+    <h2>Browser Rendering Differences</h2>
+
+    <p>Sub-pixel rendering behavior varies across browsers and platforms:</p>
+
+    <ul>
+      <li><strong>Safari</strong> (WebKit) has the best sub-pixel support. It renders <code>0.5px</code> borders cleanly on both macOS and iOS. It also handles fractional values like <code>0.333px</code> for 3x displays.</li>
+      <li><strong>Chrome</strong> (Blink) supports <code>0.5px</code> on high-DPI screens since approximately Chrome 56. On 1x screens, it rounds to either 0 or 1px depending on the version.</li>
+      <li><strong>Firefox</strong> (Gecko) handles <code>0.5px</code> on high-DPI displays but has historically shown slight differences in anti-aliasing compared to WebKit and Blink.</li>
+    </ul>
+
+    <p>For production use, the progressive enhancement approach — declaring <code>1px</code> as the default and overriding with <code>0.5px</code> on high-DPI screens via a media query — provides the most consistent results across all browsers.</p>
+
+    <h2>1px in Design Systems</h2>
+
+    <p>Major design systems have grappled with the 1px problem and arrived at different solutions:</p>
+
+    <p><strong>Apple's Human Interface Guidelines</strong> define a "hairline" as the thinnest visible line on a display. On iOS, this corresponds to 1 physical pixel, which is <code>0.5pt</code> on 2x and <code>0.333pt</code> on 3x devices. Apple's native UI frameworks handle this automatically, but web developers must implement it manually.</p>
+
+    <p><strong>Material Design</strong> uses 1dp (density-independent pixel) as its finest border width, which maps to 1 CSS pixel. Material does not attempt to render sub-pixel borders on the web, instead accepting the 2-physical-pixel width on retina displays.</p>
+
+    <p>Many custom design systems define a <code>--border-hairline</code> token that adapts based on the device pixel ratio, centralizing the hairline logic in a CSS custom property.</p>
+
+    <h2>Accessibility Considerations</h2>
+
+    <p>Thinner borders are harder to see. WCAG 2.1 does not specify minimum border widths, but it does require sufficient contrast for meaningful visual indicators. A 1-physical-pixel border in a light color on a light background may be invisible to users with low vision.</p>
+
+    <p>When using hairline borders as separators (e.g., between list items), ensure the color contrast ratio is at least <strong>3:1</strong> against the background, consistent with WCAG's non-text contrast requirements. Avoid relying on hairline borders as the only visual indicator of interactive element boundaries.</p>
+
+    <h2>Best Practices</h2>
+
+    <ul>
+      <li><strong>Use 0.5px with a 1px fallback</strong> for the widest browser support</li>
+      <li><strong>Test on actual devices</strong>, not just browser zoom — DPR emulation in DevTools does not always match real hardware rendering</li>
+      <li><strong>Centralize hairline logic</strong> in a CSS custom property or utility class rather than implementing it inline across many components</li>
+      <li><strong>Respect accessibility</strong> — ensure hairline borders have sufficient contrast and are not the sole affordance for interactive elements</li>
+      <li><strong>Consider the design context</strong> — not every border needs to be a hairline. Use 1px CSS borders for emphasis and hairlines for subtle dividers</li>
+    </ul>
+
+    <p>The journey from <a href="/spacer-gif-history/">stretching a 1x1 pixel GIF</a> across table cells to debating sub-pixel border rendering on retina screens is a testament to how much the web has evolved. The pixel remains the fundamental unit, but what "1px" means has changed dramatically.</p>
+  </article>
+
+  <RelatedArticles articles={relatedArticles} />
+</BaseLayout>

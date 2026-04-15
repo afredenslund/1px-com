@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const publishDate = '2026-04-15';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "PX Explained: What a Pixel Really Means in CSS and Beyond",
+    "description": "A deep dive into the CSS px unit, why it is not a physical pixel, the px vs rem debate, and every other meaning of PX from healthcare to gaming.",
+    "image": "https://1px.com/og-image.png",
+    "datePublished": publishDate,
+    "dateModified": publishDate,
+    "author": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "publisher": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "mainEntityOfPage": "https://1px.com/px-unit-explained/",
+  },
+];
+
+const relatedArticles = [
+  {
+    href: '/1px-css-borders/',
+    title: '1px Borders in CSS',
+    description: 'The practical impact of px on high-DPI screens — hairline borders and retina rendering.',
+  },
+  {
+    href: '/spacer-gif-history/',
+    title: 'The Spacer GIF Story',
+    description: 'When 1px meant a literal single-pixel image stretched across table layouts.',
+  },
+  {
+    href: '/power-of-one/',
+    title: 'The Power of 1',
+    description: 'Why the number one carries unique significance in domains, brands, and tech.',
+  },
+];
+
+const codeRem = `<code>/* If html font-size is 16px (default): */
+h1 { font-size: 2rem; }    /* = 32px */
+p  { font-size: 1rem; }    /* = 16px */
+.small { font-size: 0.875rem; } /* = 14px */</code>`;
+
+const codePxVsRem = `<code>/* px for things that shouldn't scale with font size */
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* rem for things that should scale with font size */
+.card-body {
+  font-size: 1rem;
+  padding: 1.5rem;
+  line-height: 1.6;
+}</code>`;
+
+const codeClamp = `<code>h1 {
+  /* Fluid: min 2rem, scales with viewport, max 4rem */
+  font-size: clamp(2rem, 5vw, 4rem);
+}</code>`;
+---
+
+<BaseLayout
+  title="PX Explained: What a Pixel Really Means in CSS and Beyond"
+  description="The CSS px unit is not a physical pixel. Learn what px actually means, the rem vs px accessibility debate, viewport units, and every other meaning of PX."
+  ogType="article"
+  publishDate={publishDate}
+  schema={schema}
+>
+  <Breadcrumbs current="PX Unit Explained" />
+
+  <article>
+    <h1>PX Explained: What a Pixel Really Means</h1>
+
+    <p>The <code>px</code> unit is the most familiar measurement in web development. Every developer has written <code>font-size: 16px</code> or <code>margin: 10px</code>. But what most developers assume — that <code>1px</code> corresponds to one physical dot on the screen — has not been true for over a decade.</p>
+
+    <p>This page unpacks what <code>px</code> actually means in CSS, how it compares to other units, and the many other contexts where those two letters carry significance.</p>
+
+    <aside class="article-cta">
+      <p>The domain <strong>1px.com</strong> is available for purchase.</p>
+      <a href="https://forsale.godaddy.com/forsale/1px.com" class="cta-button" rel="noopener">Make an Offer</a>
+    </aside>
+
+    <h2>The CSS Pixel Is an Angular Measurement</h2>
+
+    <p>The CSS specification defines the pixel unit not as a physical dot on a screen, but as an angular measurement. Specifically, 1px is defined as the visual angle of one pixel on a device with a pixel density of 96 DPI, viewed at arm's length (approximately 28 inches or 71 cm).</p>
+
+    <p>This definition was introduced to solve a practical problem: as screen pixel densities increased, a layout sized in physical pixels would shrink to an unusable size on high-DPI screens. By defining <code>px</code> as a visual angle rather than a hardware dot, the specification ensured that content sized in <code>px</code> would appear approximately the same physical size across different devices.</p>
+
+    <p>In practice, this means:</p>
+
+    <ul>
+      <li>On a <strong>1x display</strong> (96 DPI): 1 CSS px = 1 hardware pixel</li>
+      <li>On a <strong>2x Retina display</strong>: 1 CSS px = 4 hardware pixels (a 2&times;2 block)</li>
+      <li>On a <strong>3x display</strong>: 1 CSS px = 9 hardware pixels (a 3&times;3 block)</li>
+    </ul>
+
+    <p>The CSS pixel is therefore a <strong>reference pixel</strong> — an abstraction layer between the developer's intent and the hardware's capabilities. This is why <a href="/1px-css-borders/">rendering a true 1-pixel border on retina displays</a> requires special techniques.</p>
+
+    <h2>The PX vs REM Debate</h2>
+
+    <p>One of the most persistent discussions in CSS is whether to use <code>px</code> or <code>rem</code> for font sizes, spacing, and component dimensions. The arguments center on accessibility, maintainability, and developer experience.</p>
+
+    <h3>What REM Does</h3>
+
+    <p>The <code>rem</code> unit is relative to the root element's font size. If the <code>&lt;html&gt;</code> element has <code>font-size: 16px</code> (the browser default), then <code>1rem = 16px</code>. If a user changes their browser's default font size to 20px, then <code>1rem = 20px</code>.</p>
+
+    <pre set:html={codeRem} />
+
+    <h3>The Accessibility Argument</h3>
+
+    <p>The core argument for <code>rem</code> is accessibility. Users who set a larger default font size in their browser preferences (a common accessibility need) expect all text to scale accordingly. If font sizes are declared in <code>px</code>, they are <strong>fixed</strong> — they do not respond to the user's browser font size preference.</p>
+
+    <p>When font sizes are declared in <code>rem</code>, changing the browser's base font size scales everything proportionally. This respects the user's choice and maintains the design's proportions.</p>
+
+    <h3>When PX Is Appropriate</h3>
+
+    <p>Not everything should scale with font size. Borders, shadows, and certain fixed-size UI elements (icons, minimum touch targets) are often better expressed in <code>px</code> because their visual purpose is independent of text size:</p>
+
+    <pre set:html={codePxVsRem} />
+
+    <h3>A Practical Guideline</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Recommended Unit</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Font size</td>
+          <td>rem</td>
+          <td>Respects user accessibility preferences</td>
+        </tr>
+        <tr>
+          <td>Line height</td>
+          <td>unitless</td>
+          <td>Scales proportionally with font size</td>
+        </tr>
+        <tr>
+          <td>Padding / margin</td>
+          <td>rem</td>
+          <td>Maintains proportion to text</td>
+        </tr>
+        <tr>
+          <td>Borders</td>
+          <td>px</td>
+          <td>Visual consistency at all sizes</td>
+        </tr>
+        <tr>
+          <td>Border radius</td>
+          <td>px or rem</td>
+          <td>Depends on whether corners should scale</td>
+        </tr>
+        <tr>
+          <td>Box shadow</td>
+          <td>px</td>
+          <td>Visual effect, not content-related</td>
+        </tr>
+        <tr>
+          <td>Media queries</td>
+          <td>em</td>
+          <td>Responds to user font size for breakpoints</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>PX vs Viewport Units</h2>
+
+    <p>Viewport units (<code>vw</code>, <code>vh</code>, <code>dvh</code>, <code>svh</code>, <code>lvh</code>) are relative to the browser window size rather than font size or device pixels.</p>
+
+    <ul>
+      <li><code>1vw</code> = 1% of the viewport width</li>
+      <li><code>1vh</code> = 1% of the viewport height</li>
+      <li><code>1dvh</code> = 1% of the dynamic viewport height (accounts for mobile browser chrome)</li>
+    </ul>
+
+    <p>Viewport units are powerful for fluid typography and full-screen layouts, but they have limitations. Text sized in <code>vw</code> alone can become unreadably small on narrow screens or excessively large on wide ones. The <code>clamp()</code> function addresses this by combining viewport units with <code>px</code> or <code>rem</code> bounds:</p>
+
+    <pre set:html={codeClamp} />
+
+    <p>The <code>px</code> unit remains the right choice when you need an <strong>absolute minimum or maximum</strong> that does not change with viewport or font size — for example, ensuring a touch target is never smaller than <code>44px</code> regardless of context.</p>
+
+    <h2>The Physical Pixel</h2>
+
+    <p>Behind every CSS pixel is the actual hardware: a physical pixel on the display panel. Understanding the physical layer clarifies why the CSS abstraction exists.</p>
+
+    <p>A physical pixel on an LCD or OLED display is composed of <strong>subpixels</strong> — typically three (red, green, blue) arranged in a pattern. The combination of these subpixels at varying intensities produces the full color spectrum visible to the human eye.</p>
+
+    <p><strong>Pixel density</strong>, measured in pixels per inch (PPI), describes how tightly packed these physical pixels are. Higher PPI means smaller individual pixels, which means finer detail and smoother rendering:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Display Type</th>
+          <th>Typical PPI</th>
+          <th>Device Pixel Ratio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Standard desktop monitor</td>
+          <td>96–110</td>
+          <td>1x</td>
+        </tr>
+        <tr>
+          <td>MacBook Retina</td>
+          <td>220–254</td>
+          <td>2x</td>
+        </tr>
+        <tr>
+          <td>iPhone (standard)</td>
+          <td>326</td>
+          <td>2x</td>
+        </tr>
+        <tr>
+          <td>iPhone Pro Max</td>
+          <td>460</td>
+          <td>3x</td>
+        </tr>
+        <tr>
+          <td>Samsung Galaxy S series</td>
+          <td>400–500</td>
+          <td>3x–4x</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The related term <strong>DPI</strong> (dots per inch) is technically a print measurement but is often used interchangeably with PPI in digital contexts. For web development purposes, PPI and the device pixel ratio are the relevant metrics.</p>
+
+    <h2>Other Meanings of PX</h2>
+
+    <p>The letters PX carry meaning well beyond CSS. Here are the most common uses across different industries:</p>
+
+    <h3>Patient Experience (Healthcare)</h3>
+    <p>In healthcare, <strong>PX</strong> stands for <strong>Patient Experience</strong> — the sum of all interactions a patient has with a healthcare system. The field of PX research focuses on communication, care quality, and the emotional journey of patients through diagnosis, treatment, and recovery. Organizations like The Beryl Institute have established PX as a recognized discipline within healthcare administration.</p>
+
+    <h3>Player Experience (Game Design)</h3>
+    <p>In game design, <strong>PX</strong> refers to <strong>Player Experience</strong> — the game design counterpart to UX (User Experience). PX design considers engagement, flow state, difficulty curves, reward systems, and emotional responses. A PX designer's goal is to create experiences that are compelling and emotionally resonant, not just usable.</p>
+
+    <h3>Pixel Art</h3>
+    <p>The pixel remains the fundamental unit of <strong>pixel art</strong>, a digital art form where images are created at the individual pixel level. Originating from the hardware constraints of early video games and computer graphics in the 1970s and 1980s, pixel art has evolved into a deliberate aesthetic choice. Modern pixel artists create work at extremely low resolutions (sometimes as small as 16&times;16 or 32&times;32 pixels) and scale the result up for display, celebrating the visible grid as a stylistic element.</p>
+
+    <h3>PX in Commerce and Finance</h3>
+    <p>In financial markets, PX commonly appears as a ticker symbol prefix or abbreviation. In military and diplomatic contexts, PX refers to a <strong>Post Exchange</strong> — a retail store on a military installation. The abbreviation appears in numerous brand names and product identifiers across industries.</p>
+
+    <h2>The Enduring Relevance of PX</h2>
+
+    <p>From <a href="/spacer-gif-history/">the spacer GIF era</a> to modern responsive design, the pixel has been the web's fundamental unit of visual measurement. The CSS <code>px</code> unit has evolved from a direct hardware mapping to an abstraction layer, but its purpose remains the same: giving developers a predictable, consistent unit for building visual interfaces.</p>
+
+    <p>Whether you are debating <code>rem</code> vs <code>px</code> for your design system, rendering <a href="/1px-css-borders/">hairline borders on retina displays</a>, or researching patient experience in a hospital system, PX is a two-letter combination that carries weight across disciplines.</p>
+  </article>
+
+  <RelatedArticles articles={relatedArticles} />
+</BaseLayout>
