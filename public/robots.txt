@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /roadmap/
 
 Sitemap: https://1px.com/sitemap-index.xml

@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// This page is not linked from navigation — access via /roadmap/ directly
+---
+
+<BaseLayout
+  title="1px.com — Roadmap"
+  description="Internal roadmap for 1px.com development."
+>
+  <article>
+    <h1>1px.com Roadmap</h1>
+    <p style="color: var(--color-text-muted); font-style: italic;">This page is not linked from navigation. Internal use only.</p>
+
+    <h2>Priority 1 — Tracking & Discoverability</h2>
+    <ul>
+      <li><input type="checkbox" checked disabled /> Google Analytics 4 (GA4) — G-PTGMYXRG60 ✓</li>
+      <li><input type="checkbox" checked disabled /> Google Search Console — verified ✓</li>
+      <li><input type="checkbox" disabled /> Bing Webmaster Tools — verify + submit</li>
+    </ul>
+
+    <h2>Priority 2 — Social Preview (OG Image)</h2>
+    <ul>
+      <li><input type="checkbox" disabled /> Design a proper OG image (1200×630) — not auto-generated SVG-to-PNG</li>
+      <li><input type="checkbox" disabled /> Per-page OG images (spacer-gif, css-borders, px-unit, power-of-one)</li>
+      <li><input type="checkbox" disabled /> Test with Facebook Sharing Debugger, Twitter Card Validator, LinkedIn Post Inspector</li>
+    </ul>
+
+    <h2>Priority 3 — Favicon</h2>
+    <ul>
+      <li><input type="checkbox" disabled /> Design a distinctive favicon that reads at 16×16 and 32×32</li>
+      <li><input type="checkbox" disabled /> Add apple-touch-icon (180×180)</li>
+      <li><input type="checkbox" disabled /> Add web manifest for PWA-style icon on mobile</li>
+    </ul>
+
+    <h2>Priority 4 — Visual Design Overhaul</h2>
+    <ul>
+      <li><input type="checkbox" disabled /> Hero section — more visual impact, maybe animated pixel grid or spacer.gif reference</li>
+      <li><input type="checkbox" disabled /> Content cards — add visual icons or illustrations</li>
+      <li><input type="checkbox" disabled /> Typography polish — heading hierarchy, better whitespace rhythm</li>
+      <li><input type="checkbox" disabled /> Code blocks — syntax highlighting (CSS-only or lightweight)</li>
+      <li><input type="checkbox" disabled /> CTA design — more compelling "Make an Offer" treatment</li>
+      <li><input type="checkbox" disabled /> Color palette refinement</li>
+      <li><input type="checkbox" disabled /> Page transitions or subtle scroll animations (CSS-only)</li>
+    </ul>
+
+    <h2>Priority 5 — Content & SEO</h2>
+    <ul>
+      <li><input type="checkbox" disabled /> Internal linking audit — ensure all cross-links are in place</li>
+      <li><input type="checkbox" disabled /> Add more long-tail content pages (spacer.gif generator, CSS unit converter, etc.)</li>
+      <li><input type="checkbox" disabled /> Image alt text audit</li>
+      <li><input type="checkbox" disabled /> Page speed audit (Lighthouse)</li>
+      <li><input type="checkbox" disabled /> Add hreflang if Danish version is added later</li>
+    </ul>
+
+    <h2>Priority 6 — Domain Sale Optimization</h2>
+    <ul>
+      <li><input type="checkbox" disabled /> A/B test CTA copy and placement</li>
+      <li><input type="checkbox" disabled /> Add trust signals (domain age, registration history)</li>
+      <li><input type="checkbox" disabled /> Consider adding a contact form (Cloudflare Workers)</li>
+      <li><input type="checkbox" disabled /> Price anchoring strategy</li>
+    </ul>
+
+    <h2>Ideas / Backlog</h2>
+    <ul>
+      <li><input type="checkbox" disabled /> Interactive spacer.gif demo — drag to resize a table layout</li>
+      <li><input type="checkbox" disabled /> "View source" easter egg showing table-based layout</li>
+      <li><input type="checkbox" disabled /> Pixel art creator tool (generate traffic)</li>
+      <li><input type="checkbox" disabled /> CSS unit converter tool</li>
+      <li><input type="checkbox" disabled /> Retro mode toggle — switch between modern and year-2000 design</li>
+    </ul>
+  </article>
+</BaseLayout>
