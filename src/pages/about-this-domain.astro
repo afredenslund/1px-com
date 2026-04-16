@@ -1,0 +1,223 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const publishDate = '2026-04-16';
+
+const domainAge = Math.floor((Date.now() - new Date('2002-05-04').getTime()) / (1000 * 60 * 60 * 24 * 365.25));
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "About 1px.com: A 24-Year-Old Premium 3-Character Domain",
+    "description": "Domain profile for 1px.com — registered May 4, 2002. A rare 3-character .com with deep roots in web development history.",
+    "image": "https://1px.com/og-image.png",
+    "datePublished": publishDate,
+    "dateModified": publishDate,
+    "author": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "publisher": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "mainEntityOfPage": "https://1px.com/about-this-domain/",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "1px.com",
+    "description": "Premium 3-character .com domain name with 24 years of registration history and inherent meaning in web development.",
+    "url": "https://1px.com/about-this-domain/",
+    "brand": { "@type": "Brand", "name": "1px.com" },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://forsale.godaddy.com/forsale/1px.com",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "USD",
+    }
+  }
+];
+
+const relatedArticles = [
+  {
+    href: '/spacer-gif-history/',
+    title: 'The Spacer GIF Story',
+    description: 'The history behind the 1px reference — the invisible pixel that built the web.',
+  },
+  {
+    href: '/power-of-one/',
+    title: 'The Power of 1',
+    description: 'Why single-character domains and the number one command premium value.',
+  },
+  {
+    href: '/1px-css-borders/',
+    title: '1px Borders in CSS',
+    description: 'How 1px remains the most written CSS value in modern web development.',
+  },
+];
+---
+
+<BaseLayout
+  title="About 1px.com: A Premium 3-Character Domain Since 2002"
+  description="Domain profile for 1px.com — registered May 4, 2002. A rare 3-character .com domain with deep roots in web history, clean WHOIS record, and inherent meaning in web development."
+  ogType="article"
+  publishDate={publishDate}
+  schema={schema}
+>
+  <Breadcrumbs current="About This Domain" />
+
+  <article>
+    <h1>About 1px.com</h1>
+
+    <p><strong>1px.com</strong> is a premium 3-character .com domain name with {domainAge} years of continuous registration history. It carries inherent meaning in web development — referencing the fundamental unit of digital visual media — and is available for acquisition.</p>
+
+    <aside class="article-cta">
+      <p>This domain is available for purchase.</p>
+      <a href="https://forsale.godaddy.com/forsale/1px.com" class="cta-button" rel="noopener">Make an Offer on 1px.com</a>
+    </aside>
+
+    <h2>Domain Data</h2>
+
+    <table>
+      <tbody>
+        <tr>
+          <th>Domain</th>
+          <td>1px.com</td>
+        </tr>
+        <tr>
+          <th>Characters</th>
+          <td>3 (one digit + two letters)</td>
+        </tr>
+        <tr>
+          <th>TLD</th>
+          <td>.com — the most recognized and valued top-level domain</td>
+        </tr>
+        <tr>
+          <th>Registered</th>
+          <td>May 4, 2002</td>
+        </tr>
+        <tr>
+          <th>Domain Age</th>
+          <td>{domainAge} years</td>
+        </tr>
+        <tr>
+          <th>Expires</th>
+          <td>May 4, 2029 (renewed 3+ years ahead)</td>
+        </tr>
+        <tr>
+          <th>History</th>
+          <td>Clean — no spam, malware, or blacklist history</td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td>Available for acquisition</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Why Domain Age Matters</h2>
+
+    <p>Domain age is a recognized trust signal in search engine ranking algorithms. Older domains that have been continuously registered demonstrate stability and legitimacy. A domain registered in 2002 has survived the dot-com bust, multiple algorithm updates, and over two decades of internet evolution.</p>
+
+    <p><strong>1px.com was registered on May 4, 2002</strong> — during the peak of the <a href="/spacer-gif-history/">spacer GIF era</a>. When this domain was first registered, web designers were still building layouts with <code>&lt;table&gt;</code> elements and 1&times;1 pixel transparent GIFs. The domain's registration date is itself a piece of web history.</p>
+
+    <p>Key implications of a {domainAge}-year domain age:</p>
+
+    <ul>
+      <li><strong>Search engine trust</strong> — aged domains carry higher baseline authority than newly registered ones</li>
+      <li><strong>No sandbox period</strong> — new domains often face a trust-building period before ranking well. A {domainAge}-year-old domain bypasses this entirely</li>
+      <li><strong>Backlink maturity</strong> — any links pointing to this domain carry accumulated authority from years of existence</li>
+      <li><strong>Registration stability</strong> — continuous renewal since 2002 signals a domain valued by its owner, not abandoned or cycling through registrants</li>
+    </ul>
+
+    <h2>What Makes 1px.com Unique</h2>
+
+    <h3>Three Characters</h3>
+    <p>There are only 46,656 possible 3-character .com domain names (using letters and digits). The vast majority were registered before 2005 and rarely become available. At three characters, <strong>1px.com</strong> is short enough to be typed without error, remembered after a single exposure, and recognized at a glance in any context — from a browser tab to a billboard.</p>
+
+    <h3>Inherent Meaning</h3>
+    <p>Unlike arbitrary letter combinations, <strong>1px</strong> carries immediate meaning to anyone in web development or digital design. It is not a random string — it is a term actively used by millions of developers daily. Every CSS stylesheet in the world contains <code>1px</code> declarations. The domain is a natural-language match for its industry.</p>
+
+    <h3>Cultural Significance</h3>
+    <p>The <a href="/spacer-gif-history/">1&times;1 pixel transparent GIF</a> was the structural foundation of web design for nearly a decade. <strong>1px</strong> references this shared history — a cultural touchstone that resonates with anyone who built websites in the late 1990s and early 2000s. It signals deep web heritage and technical credibility.</p>
+
+    <h3>Universal Readability</h3>
+    <p>The characters "1", "p", and "x" are universally recognized across languages and alphabets. The domain works globally without transliteration or explanation. Digits and basic Latin characters are the most accessible character set for international branding.</p>
+
+    <h2>Brand Potential</h2>
+
+    <p><strong>1px.com</strong> is a natural fit for any product, service, or publication in the web technology and design space:</p>
+
+    <ul>
+      <li><strong>CSS framework or design system</strong> — "Built with 1px precision"</li>
+      <li><strong>Frontend development tool</strong> — code editors, browser DevTools, linting tools</li>
+      <li><strong>Creative or design agency</strong> — signaling pixel-perfect craft</li>
+      <li><strong>Web development publication</strong> — technical articles, tutorials, industry news</li>
+      <li><strong>Pixel art platform</strong> — the fundamental unit of the art form</li>
+      <li><strong>Screen and display technology</strong> — pixel density, rendering, calibration</li>
+      <li><strong>Design education</strong> — teaching the fundamentals of digital visual media</li>
+    </ul>
+
+    <p>The domain's strength is its versatility within a clearly defined space. It does not pigeonhole into a single use case — it provides a memorable, authoritative foundation for any brand that values precision and web heritage.</p>
+
+    <h2>Technical Profile</h2>
+
+    <p>This site demonstrates the domain's potential as a high-performance, SEO-optimized web property:</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <th>Lighthouse Performance</th>
+          <td>100 / 100</td>
+        </tr>
+        <tr>
+          <th>Lighthouse Accessibility</th>
+          <td>100 / 100</td>
+        </tr>
+        <tr>
+          <th>Lighthouse Best Practices</th>
+          <td>100 / 100</td>
+        </tr>
+        <tr>
+          <th>Lighthouse SEO</th>
+          <td>100 / 100</td>
+        </tr>
+        <tr>
+          <th>Hosting</th>
+          <td>Cloudflare Pages (global CDN)</td>
+        </tr>
+        <tr>
+          <th>SSL</th>
+          <td>Full strict HTTPS</td>
+        </tr>
+        <tr>
+          <th>Structured Data</th>
+          <td>JSON-LD (Article, FAQPage, BreadcrumbList, WebSite, Organization, Product)</td>
+        </tr>
+        <tr>
+          <th>Sitemap</th>
+          <td>Auto-generated, submitted to Google &amp; Bing</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>The Market for Short .com Domains</h2>
+
+    <p>Three-character .com domains are finite assets. The namespace is fixed — no new 3-character combinations can be created. As digital presence becomes increasingly important for businesses worldwide, the supply of premium short domains remains constant while demand grows.</p>
+
+    <p>Factors that influence the value of short .com domains:</p>
+
+    <ul>
+      <li><strong>Length</strong> — shorter domains command higher prices. Three characters is near the minimum for a meaningful .com</li>
+      <li><strong>Meaning</strong> — domains that form recognizable words, abbreviations, or industry terms are valued over random strings</li>
+      <li><strong>Extension</strong> — .com remains the most trusted and valuable TLD by a significant margin</li>
+      <li><strong>Age</strong> — continuous registration history adds trust and authority</li>
+      <li><strong>Clean history</strong> — domains without spam, malware, or penalty history carry their full potential</li>
+    </ul>
+
+    <aside class="article-cta">
+      <p><strong>1px.com</strong> checks every box. Three characters, inherent meaning, .com extension, {domainAge} years of age, clean history.</p>
+      <a href="https://forsale.godaddy.com/forsale/1px.com" class="cta-button" rel="noopener">Make an Offer on 1px.com</a>
+    </aside>
+  </article>
+
+  <RelatedArticles articles={relatedArticles} />
+</BaseLayout>
