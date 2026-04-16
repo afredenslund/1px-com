@@ -1,10 +1,27 @@
 ---
+import { Code } from 'astro:components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import RelatedArticles from '../components/RelatedArticles.astro';
 import TrustLine from '../components/TrustLine.astro';
 
 const publishDate = '2026-04-15';
+
+const codeThemes = { light: 'github-light', dark: 'github-dark-dimmed' } as const;
+
+const codeSpacerTable = `<table width="600" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="150">
+      <img src="spacer.gif" width="150" height="1" border="0" alt="">
+    </td>
+    <td width="300">
+      <!-- Main content here -->
+    </td>
+    <td width="150">
+      <img src="spacer.gif" width="150" height="1" border="0" alt="">
+    </td>
+  </tr>
+</table>`;
 
 const schema = [
   {
@@ -126,19 +143,7 @@ const relatedArticles = [
 
     <p>Designers would reference this single file hundreds of times on a page, each time with different HTML <code>width</code> and <code>height</code> attributes:</p>
 
-    <pre><code>&lt;table width="600" border="0" cellpadding="0" cellspacing="0"&gt;
-  &lt;tr&gt;
-    &lt;td width="150"&gt;
-      &lt;img src="spacer.gif" width="150" height="1" border="0" alt=""&gt;
-    &lt;/td&gt;
-    &lt;td width="300"&gt;
-      &lt;!-- Main content here --&gt;
-    &lt;/td&gt;
-    &lt;td width="150"&gt;
-      &lt;img src="spacer.gif" width="150" height="1" border="0" alt=""&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;</code></pre>
+    <Code code={codeSpacerTable} lang="html" themes={codeThemes} defaultColor={false} />
 
     <p>The browser would stretch the 1&times;1 pixel image to fill the specified dimensions. Because it was transparent, nothing was visible. But the table cell now had content with explicit dimensions, preventing it from collapsing.</p>
 

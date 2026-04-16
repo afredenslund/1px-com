@@ -1,8 +1,11 @@
 ---
+import { Code } from 'astro:components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import RelatedArticles from '../components/RelatedArticles.astro';
 import TrustLine from '../components/TrustLine.astro';
+
+const codeThemes = { light: 'github-light', dark: 'github-dark-dimmed' } as const;
 
 const publishDate = '2026-04-15';
 
@@ -39,12 +42,12 @@ const relatedArticles = [
   },
 ];
 
-const codeRem = `<code>/* If html font-size is 16px (default): */
+const codeRem = `/* If html font-size is 16px (default): */
 h1 { font-size: 2rem; }    /* = 32px */
 p  { font-size: 1rem; }    /* = 16px */
-.small { font-size: 0.875rem; } /* = 14px */</code>`;
+.small { font-size: 0.875rem; } /* = 14px */`;
 
-const codePxVsRem = `<code>/* px for things that shouldn't scale with font size */
+const codePxVsRem = `/* px for things that shouldn't scale with font size */
 .card {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -56,12 +59,12 @@ const codePxVsRem = `<code>/* px for things that shouldn't scale with font size 
   font-size: 1rem;
   padding: 1.5rem;
   line-height: 1.6;
-}</code>`;
+}`;
 
-const codeClamp = `<code>h1 {
+const codeClamp = `h1 {
   /* Fluid: min 2rem, scales with viewport, max 4rem */
   font-size: clamp(2rem, 5vw, 4rem);
-}</code>`;
+}`;
 ---
 
 <BaseLayout
@@ -110,7 +113,7 @@ const codeClamp = `<code>h1 {
 
     <p>The <code>rem</code> unit is relative to the root element's font size. If the <code>&lt;html&gt;</code> element has <code>font-size: 16px</code> (the browser default), then <code>1rem = 16px</code>. If a user changes their browser's default font size to 20px, then <code>1rem = 20px</code>.</p>
 
-    <pre set:html={codeRem} />
+    <Code code={codeRem} lang="css" themes={codeThemes} defaultColor={false} />
 
     <h3>The Accessibility Argument</h3>
 
@@ -122,7 +125,7 @@ const codeClamp = `<code>h1 {
 
     <p>Not everything should scale with font size. Borders, shadows, and certain fixed-size UI elements (icons, minimum touch targets) are often better expressed in <code>px</code> because their visual purpose is independent of text size:</p>
 
-    <pre set:html={codePxVsRem} />
+    <Code code={codePxVsRem} lang="css" themes={codeThemes} defaultColor={false} />
 
     <h3>A Practical Guideline</h3>
 
@@ -185,7 +188,7 @@ const codeClamp = `<code>h1 {
 
     <p>Viewport units are powerful for fluid typography and full-screen layouts, but they have limitations. Text sized in <code>vw</code> alone can become unreadably small on narrow screens or excessively large on wide ones. The <code>clamp()</code> function addresses this by combining viewport units with <code>px</code> or <code>rem</code> bounds:</p>
 
-    <pre set:html={codeClamp} />
+    <Code code={codeClamp} lang="css" themes={codeThemes} defaultColor={false} />
 
     <p>The <code>px</code> unit remains the right choice when you need an <strong>absolute minimum or maximum</strong> that does not change with viewport or font size — for example, ensuring a touch target is never smaller than <code>44px</code> regardless of context.</p>
 

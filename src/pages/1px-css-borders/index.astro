@@ -1,8 +1,11 @@
 ---
+import { Code } from 'astro:components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import RelatedArticles from '../../components/RelatedArticles.astro';
 import TrustLine from '../../components/TrustLine.astro';
+
+const codeThemes = { light: 'github-light', dark: 'github-dark-dimmed' } as const;
 
 const publishDate = '2026-04-15';
 
@@ -39,18 +42,18 @@ const relatedArticles = [
   },
 ];
 
-const codeDpr = `<code>/* Target high-DPI screens */
+const codeDpr = `/* Target high-DPI screens */
 @media (min-resolution: 2dppx) {
   .border-element {
     border-width: 0.5px;
   }
-}</code>`;
+}`;
 
-const codeHairline = `<code>.hairline {
+const codeHairline = `.hairline {
   border: 0.5px solid #d0d0d0;
-}</code>`;
+}`;
 
-const codeHairlineFallback = `<code>.hairline {
+const codeHairlineFallback = `.hairline {
   border: 1px solid #d0d0d0;
 }
 
@@ -58,9 +61,9 @@ const codeHairlineFallback = `<code>.hairline {
   .hairline {
     border-width: 0.5px;
   }
-}</code>`;
+}`;
 
-const codeTransform = `<code>.hairline-bottom {
+const codeTransform = `.hairline-bottom {
   position: relative;
 }
 
@@ -74,16 +77,16 @@ const codeTransform = `<code>.hairline-bottom {
   background: #d0d0d0;
   transform: scaleY(0.5);
   transform-origin: bottom;
-}</code>`;
+}`;
 
-const codeBoxShadow = `<code>.hairline-shadow {
+const codeBoxShadow = `.hairline-shadow {
   box-shadow: 0 0 0 0.5px #d0d0d0;
-}</code>`;
+}`;
 
-const codeBorderImage = `<code>.hairline-gradient {
+const codeBorderImage = `.hairline-gradient {
   border-bottom: 1px solid transparent;
   border-image: linear-gradient(to bottom, transparent 50%, #d0d0d0 50%) 0 0 1 0;
-}</code>`;
+}`;
 ---
 
 <BaseLayout
@@ -147,7 +150,7 @@ const codeBorderImage = `<code>.hairline-gradient {
 
     <p>The <strong>device pixel ratio</strong> (DPR) is the ratio between physical pixels and CSS pixels. You can query it in JavaScript via <code>window.devicePixelRatio</code> and in CSS via the <code>resolution</code> media feature or the older <code>-webkit-device-pixel-ratio</code>.</p>
 
-    <pre set:html={codeDpr} />
+    <Code code={codeDpr} lang="css" themes={codeThemes} defaultColor={false} />
 
     <p>Understanding DPR is essential for any technique that attempts to render sub-CSS-pixel borders. The goal is always the same: make the border occupy exactly 1 physical pixel, regardless of the device's pixel density.</p>
 
@@ -157,19 +160,19 @@ const codeBorderImage = `<code>.hairline-gradient {
 
     <p>The most straightforward approach is to simply declare a half-pixel border:</p>
 
-    <pre set:html={codeHairline} />
+    <Code code={codeHairline} lang="css" themes={codeThemes} defaultColor={false} />
 
     <p>On a 2x display, <code>0.5px</code> maps to exactly 1 physical pixel. This works reliably in <strong>Safari</strong> (both macOS and iOS) and in <strong>Chrome</strong> on high-DPI screens. However, some older browsers round <code>0.5px</code> down to <code>0px</code>, making the border disappear entirely.</p>
 
     <p>The safest approach is to use a media query to apply <code>0.5px</code> only on high-DPI devices:</p>
 
-    <pre set:html={codeHairlineFallback} />
+    <Code code={codeHairlineFallback} lang="css" themes={codeThemes} defaultColor={false} />
 
     <h3>The Transform Scale Technique</h3>
 
     <p>A widely used approach that works across all modern browsers involves drawing a 1px border and then scaling it down by 50%:</p>
 
-    <pre set:html={codeTransform} />
+    <Code code={codeTransform} lang="css" themes={codeThemes} defaultColor={false} />
 
     <p>This creates a pseudo-element with a 1px height, then scales it to 0.5px in the vertical axis. On a 2x display, the result is a 1-physical-pixel line. The technique extends to 3x displays by using <code>scaleY(0.333)</code>.</p>
 
@@ -177,7 +180,7 @@ const codeBorderImage = `<code>.hairline-gradient {
 
     <p>Box shadows can simulate borders without occupying layout space:</p>
 
-    <pre set:html={codeBoxShadow} />
+    <Code code={codeBoxShadow} lang="css" themes={codeThemes} defaultColor={false} />
 
     <p>This creates an inset shadow that mimics a border. The advantage is simplicity. The disadvantage is that box-shadow rendering can differ subtly from border rendering, especially at corners and with border-radius.</p>
 
@@ -185,7 +188,7 @@ const codeBorderImage = `<code>.hairline-gradient {
 
     <p>Using a linear gradient as a border image allows pixel-precise control:</p>
 
-    <pre set:html={codeBorderImage} />
+    <Code code={codeBorderImage} lang="css" themes={codeThemes} defaultColor={false} />
 
     <p>This draws the border color only in the bottom half of the 1px space, resulting in a 0.5px visual line on 2x displays. It is a clever use of the border-image specification but can be hard to maintain and does not work with border-radius.</p>
 
