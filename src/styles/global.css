@@ -381,6 +381,25 @@ pre code {
   margin-top: var(--space-xs);
 }
 
+/* --- Trust line --- */
+.trust-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+  margin-bottom: 0;
+}
+
+.trust-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  color: #22C55E;
+}
+
 /* --- CTA Button --- */
 .cta-button {
   display: inline-block;
