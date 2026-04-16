@@ -157,7 +157,7 @@ strong {
 
 /* --- Article content --- */
 article {
-  padding-top: var(--space-xl);
+  padding-top: var(--space-lg);
 }
 
 article > * + * {
