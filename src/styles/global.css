@@ -160,6 +160,14 @@ article > * + * {
   margin-top: var(--space-sm);
 }
 
+article h2 {
+  margin-top: var(--space-2xl);
+}
+
+article h3 {
+  margin-top: var(--space-lg);
+}
+
 article h2 + p,
 article h3 + p {
   margin-top: var(--space-xs);
