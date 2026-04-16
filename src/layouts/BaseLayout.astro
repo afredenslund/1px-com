@@ -58,6 +58,20 @@ const props = Astro.props;
         }
         window.addEventListener('scroll', onScroll, { passive: true });
       })();
+      // Track Make an Offer clicks
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href*="forsale.godaddy.com"]');
+        if (!link) return;
+        var location = link.dataset.cta || link.closest('.article-cta') && 'article' || 'unknown';
+        var page = window.location.pathname;
+        if (typeof gtag === 'function') {
+          gtag('event', 'make_offer_click', {
+            event_category: 'domain_sale',
+            event_label: location + ' | ' + page,
+            transport_type: 'beacon'
+          });
+        }
+      });
     </script>
   </body>
 </html>
