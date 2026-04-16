@@ -94,7 +94,7 @@ main {
   width: 100%;
   max-width: calc(var(--measure) + var(--space-lg) * 2);
   margin: 0 auto;
-  padding: var(--space-xl) var(--space-md);
+  padding: var(--space-2xl) var(--space-md) var(--space-xl);
 }
 
 img {
@@ -161,7 +161,7 @@ article > * + * {
 }
 
 article h2 {
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-xl);
 }
 
 article h3 {
