@@ -94,7 +94,11 @@ main {
   width: 100%;
   max-width: calc(var(--measure) + var(--space-lg) * 2);
   margin: 0 auto;
-  padding: var(--space-lg) var(--space-md);
+  padding: 0 var(--space-md) var(--space-lg);
+}
+
+main > *:first-child {
+  margin-top: 0;
 }
 
 img {
@@ -330,13 +334,17 @@ pre code {
 }
 
 /* --- Breadcrumbs --- */
+.breadcrumbs {
+  padding-top: var(--space-sm);
+}
+
 .breadcrumbs ol {
   display: flex;
   gap: var(--space-xs);
   list-style: none;
-  font-size: var(--size-sm);
+  font-size: var(--size-xs);
   color: var(--color-text-muted);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
 .breadcrumbs li + li::before {
