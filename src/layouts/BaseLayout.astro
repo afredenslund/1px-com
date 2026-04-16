@@ -24,12 +24,28 @@ const props = Astro.props;
     <BaseHead {...props} />
   </head>
   <body>
-    <DomainCTA />
-    <Header />
+    <div class="sticky-top" id="sticky-top">
+      <DomainCTA />
+      <Header />
+    </div>
     <main>
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      (function() {
+        var top = document.getElementById('sticky-top');
+        var scrolled = false;
+        function onScroll() {
+          var s = window.scrollY > 40;
+          if (s !== scrolled) {
+            scrolled = s;
+            top.classList.toggle('scrolled', s);
+          }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+      })();
+    </script>
   </body>
 </html>
 <!--
