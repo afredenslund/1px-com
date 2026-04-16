@@ -457,22 +457,60 @@ pre code {
   color: var(--color-text-muted);
 }
 
-/* --- Home page --- */
+/* --- Hero (full-bleed) --- */
 .hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-bg);
+  border-bottom: var(--border);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  opacity: 0.4;
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 70%);
+}
+
+.hero-content {
+  position: relative;
   text-align: center;
-  padding: var(--space-xl) 0 var(--space-lg);
+  padding: var(--space-2xl) var(--space-md);
 }
 
 .hero h1 {
-  font-size: clamp(3rem, 8vw, 5rem);
-  letter-spacing: -0.03em;
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  letter-spacing: -0.04em;
+  margin-bottom: 0;
 }
 
-.hero .subtitle {
-  font-size: var(--size-h4);
+.hero-tld {
   color: var(--color-text-muted);
-  margin-top: var(--space-xs);
+  font-weight: 300;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
   font-weight: 400;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hero-grid {
+    opacity: 0.2;
+  }
 }
 
 .content-grid {
