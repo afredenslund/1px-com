@@ -479,7 +479,7 @@ pre code {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--color-bg);
+  background: linear-gradient(180deg, #F0F1F4 0%, #E4E6EB 40%, #ECEDF0 100%);
   border-bottom: var(--border);
 }
 
@@ -487,12 +487,22 @@ pre code {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(var(--color-border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px);
   background-size: 2rem 2rem;
-  opacity: 0.4;
-  mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 20%, transparent 70%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 75%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .hero {
+    background: linear-gradient(180deg, #151928 0%, #1A1E30 40%, #161A2A 100%);
+  }
+  .hero-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  }
 }
 
 .hero-content {
@@ -520,9 +530,6 @@ pre code {
 }
 
 @media (prefers-color-scheme: dark) {
-  .hero-grid {
-    opacity: 0.2;
-  }
 }
 
 .content-grid {
