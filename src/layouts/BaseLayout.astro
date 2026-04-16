@@ -34,13 +34,17 @@ const props = Astro.props;
     <Footer />
     <script is:inline>
       (function() {
-        var top = document.getElementById('sticky-top');
-        var scrolled = false;
+        var el = document.getElementById('sticky-top');
+        var lastY = 0;
+        var minimized = false;
         function onScroll() {
-          var s = window.scrollY > 40;
-          if (s !== scrolled) {
-            scrolled = s;
-            top.classList.toggle('scrolled', s);
+          var y = window.scrollY;
+          var down = y > lastY && y > 40;
+          lastY = y;
+          if (y <= 10) down = false;
+          if (down !== minimized) {
+            minimized = down;
+            el.classList.toggle('scrolled', down);
           }
         }
         window.addEventListener('scroll', onScroll, { passive: true });

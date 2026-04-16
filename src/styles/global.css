@@ -226,9 +226,12 @@ pre code {
 }
 
 .sticky-top.scrolled .domain-banner {
-  max-height: 0;
-  padding: 0 var(--space-sm);
-  opacity: 0;
+  padding: 0.2rem var(--space-sm);
+  font-size: var(--size-xs);
+}
+
+.sticky-top.scrolled .domain-banner strong {
+  display: none;
 }
 
 .domain-banner strong {
