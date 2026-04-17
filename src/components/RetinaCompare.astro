@@ -1,0 +1,66 @@
+---
+// Interactive before/after slider comparing "1x display" rendering
+// (chunky borders) with "Retina hairline" rendering.
+// No dependencies; tiny inline script updates a CSS variable.
+---
+
+<figure class="retina-compare" data-compare>
+  <div class="retina-compare-viewport">
+    <!-- Base layer: Retina hairline rendering (always visible) -->
+    <div class="retina-compare-layer retina-compare-base" aria-hidden="true">
+      <div class="retina-demo retina-demo--hairline">
+        <div class="retina-demo-row"><span>Display & Brightness</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Wallpaper</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Sounds & Haptics</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Focus</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Screen Time</span><span class="retina-demo-chevron">›</span></div>
+      </div>
+    </div>
+
+    <!-- Overlay layer: 1x heavy rendering (clipped to slider position) -->
+    <div class="retina-compare-layer retina-compare-overlay" aria-hidden="true">
+      <div class="retina-demo retina-demo--heavy">
+        <div class="retina-demo-row"><span>Display & Brightness</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Wallpaper</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Sounds & Haptics</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Focus</span><span class="retina-demo-chevron">›</span></div>
+        <div class="retina-demo-row"><span>Screen Time</span><span class="retina-demo-chevron">›</span></div>
+      </div>
+    </div>
+
+    <div class="retina-compare-labels" aria-hidden="true">
+      <span class="retina-compare-label retina-compare-label--left">1x display</span>
+      <span class="retina-compare-label retina-compare-label--right">Retina hairline</span>
+    </div>
+
+    <div class="retina-compare-handle" aria-hidden="true">
+      <span class="retina-compare-handle-grip"></span>
+    </div>
+
+    <input
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      class="retina-compare-slider"
+      aria-label="Drag to compare 1x display rendering with Retina hairline rendering"
+    />
+  </div>
+
+  <figcaption>
+    Drag the slider to compare. On the left, a <code>1px</code> border as it
+    appears on a 1x display (two physical pixels on Retina — visibly chunky).
+    On the right, a true single-physical-pixel hairline.
+  </figcaption>
+</figure>
+
+<script is:inline>
+  document.querySelectorAll('[data-compare]').forEach(function (el) {
+    var slider = el.querySelector('.retina-compare-slider');
+    function update() {
+      el.style.setProperty('--split', slider.value + '%');
+    }
+    slider.addEventListener('input', update);
+    update();
+  });
+</script>

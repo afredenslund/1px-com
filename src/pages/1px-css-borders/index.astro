@@ -5,6 +5,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import RelatedArticles from '../../components/RelatedArticles.astro';
 import TrustLine from '../../components/TrustLine.astro';
 import PioneerQuote from '../../components/PioneerQuote.astro';
+import RetinaCompare from '../../components/RetinaCompare.astro';
 
 const codeThemes = { light: 'github-light', dark: 'github-dark-dimmed' } as const;
 
@@ -146,6 +147,8 @@ const codeBorderImage = `.hairline-gradient {
     </table>
 
     <p>The visual difference is significant. On a 2x display, a <code>1px</code> border looks twice as thick as it would on a standard display. Compared to native iOS or Android UI elements — which render true 1-physical-pixel dividers — CSS borders appear heavy and clunky.</p>
+
+    <RetinaCompare />
 
     <PioneerQuote
       author="Steve Jobs"
