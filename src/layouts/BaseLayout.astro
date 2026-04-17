@@ -29,11 +29,18 @@ const props = Astro.props;
       <Header />
     </div>
     <script is:inline>
-      // Close mobile nav on load; desktop keeps it open so ul stays in flow
+      // Keep nav open on desktop (so ul stays in layout flow) and closed on
+      // mobile (so burger controls it). Re-sync on viewport changes.
       (function() {
-        if (!window.matchMedia('(min-width: 768px)').matches) {
-          document.querySelector('.nav-disclosure')?.removeAttribute('open');
+        var mq = window.matchMedia('(min-width: 768px)');
+        function sync() {
+          var nav = document.querySelector('.nav-disclosure');
+          if (!nav) return;
+          if (mq.matches) nav.setAttribute('open', '');
+          else nav.removeAttribute('open');
         }
+        sync();
+        mq.addEventListener('change', sync);
       })();
     </script>
     <main>
