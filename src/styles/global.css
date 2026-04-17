@@ -287,12 +287,24 @@ pre code {
 .retina-demo {
   --row-height: 52px;
   --border-width: 1px;
+  position: relative;
   width: 100%;
   background: var(--row-bg);
   border-radius: 6px;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+/* Outer border drawn as a pseudo-element so the border width has no effect
+   on layout (heavy and hairline demos stay the same height). */
+.retina-demo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
   border: var(--border-width) solid var(--border-color);
+  border-radius: 6px;
+  pointer-events: none;
 }
 
 .retina-demo-row {
