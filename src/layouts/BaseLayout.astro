@@ -28,6 +28,14 @@ const props = Astro.props;
       <DomainCTA />
       <Header />
     </div>
+    <script is:inline>
+      // Close mobile nav on load; desktop keeps it open so ul stays in flow
+      (function() {
+        if (!window.matchMedia('(min-width: 768px)').matches) {
+          document.querySelector('.nav-disclosure')?.removeAttribute('open');
+        }
+      })();
+    </script>
     <main>
       <slot />
     </main>
