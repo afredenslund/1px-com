@@ -696,17 +696,18 @@ pre code {
 
   .site-header nav ul {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     padding: 0;
     border-top: none;
     margin-top: 0;
   }
 
   .site-header nav a {
-    padding: var(--space-sm) var(--space-sm);
-    padding-left: var(--space-sm);
+    padding: var(--space-sm) clamp(0.25rem, 1.2vw, var(--space-sm));
     border-left: none;
     border-bottom: 2px solid transparent;
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    white-space: nowrap;
   }
 
   .site-header nav a.active {
