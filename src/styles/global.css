@@ -1075,7 +1075,9 @@ th {
   border-top: var(--border);
   border-bottom: var(--border);
   scrollbar-width: thin;
-  justify-content: center;
+  /* `safe center` centers when content fits, but falls back to start-alignment
+     when it overflows — otherwise earlier years become unreachable on mobile. */
+  justify-content: safe center;
 }
 
 .timeline-tick {
