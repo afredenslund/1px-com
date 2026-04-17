@@ -697,6 +697,7 @@ pre code {
   .site-header nav ul {
     flex-direction: row;
     flex-wrap: nowrap;
+    justify-content: space-between;
     padding: 0;
     border-top: none;
     margin-top: 0;
