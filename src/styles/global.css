@@ -265,18 +265,24 @@ pre code {
   max-width: 480px;
   margin: 0 auto;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-  padding: var(--space-md);
 }
 
-/* Base layer flows in the viewport and determines its height.
-   Overlay is absolutely positioned on top, clipped to slider. */
+/* Both layers share identical padding so their demos line up, and the
+   overlay's clip-path uses the same coordinate system as the handle
+   (both anchored to the viewport box). */
+.retina-compare-base,
+.retina-compare-overlay {
+  padding: var(--space-md);
+  box-sizing: border-box;
+}
+
 .retina-compare-base {
   position: relative;
 }
 
 .retina-compare-overlay {
   position: absolute;
-  inset: var(--space-md);
+  inset: 0;
 }
 
 .retina-compare-overlay {
