@@ -37,3 +37,39 @@ const navLinks = [
     </details>
   </nav>
 </header>
+
+<script is:inline>
+  // Slide a subtle indicator line from the active nav item to whichever
+  // link the user hovers over, then slide back on leave.
+  (function () {
+    var ul = document.querySelector('.site-header nav ul');
+    if (!ul) return;
+    var links = ul.querySelectorAll('a');
+    var active = ul.querySelector('a.active');
+
+    var moveTo = function (el, visible) {
+      ul.style.setProperty('--nav-indicator-left', el.offsetLeft + 'px');
+      ul.style.setProperty('--nav-indicator-width', el.offsetWidth + 'px');
+      ul.style.setProperty('--nav-indicator-opacity', visible ? '1' : '0');
+    };
+
+    if (active) moveTo(active, false);
+
+    links.forEach(function (a) {
+      a.addEventListener('mouseenter', function () {
+        moveTo(a, !a.classList.contains('active'));
+      });
+      a.addEventListener('focus', function () {
+        moveTo(a, !a.classList.contains('active'));
+      });
+    });
+
+    ul.addEventListener('mouseleave', function () {
+      if (active) moveTo(active, false);
+    });
+
+    window.addEventListener('resize', function () {
+      if (active) moveTo(active, false);
+    });
+  })();
+</script>

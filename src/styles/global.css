@@ -701,6 +701,28 @@ pre code {
     padding: 0;
     border-top: none;
     margin-top: 0;
+    position: relative;
+  }
+
+  .site-header nav ul::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: var(--nav-indicator-left, 0);
+    width: var(--nav-indicator-width, 0);
+    height: 2px;
+    background: var(--color-text-muted);
+    opacity: var(--nav-indicator-opacity, 0);
+    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.15s ease;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header nav ul::after {
+      transition: opacity 0.15s ease;
+    }
   }
 
   .site-header nav a {
