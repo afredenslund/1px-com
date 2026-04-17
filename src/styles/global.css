@@ -1054,6 +1054,14 @@ th {
   margin: 0;
 }
 
+/* Full-bleed utility: break out of the constrained <main> column */
+.timeline-ruler,
+.timeline-track {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
 /* Sticky ruler — overflow-x to let it scroll on narrow screens */
 .timeline-ruler {
   position: sticky;
