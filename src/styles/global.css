@@ -1022,6 +1022,358 @@ th {
   font-weight: 600;
 }
 
+/* --- History Timeline --- */
+.history-article {
+  /* Timeline needs to break out of the narrow article measure */
+  max-width: none;
+}
+
+.history-intro {
+  max-width: var(--measure);
+  margin: 0 auto var(--space-lg);
+  padding: 0 var(--space-md);
+  text-align: center;
+}
+
+.history-intro h1 {
+  margin-bottom: var(--space-sm);
+}
+
+.history-intro .lede {
+  color: var(--color-text-muted);
+  font-size: var(--size-base);
+  margin: 0 auto var(--space-sm);
+  max-width: 48ch;
+}
+
+.history-hint {
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Sticky ruler — overflow-x to let it scroll on narrow screens */
+.timeline-ruler {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  overflow-x: auto;
+  background: var(--color-bg);
+  border-top: var(--border);
+  border-bottom: var(--border);
+  scrollbar-width: thin;
+  justify-content: center;
+}
+
+.timeline-tick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 4px 6px;
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: var(--size-xs);
+  font-variant-numeric: tabular-nums;
+  border-radius: 4px;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.timeline-tick:hover {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.timeline-tick-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: background-color 0.15s, transform 0.15s;
+}
+
+.timeline-tick--active {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.timeline-tick--active .timeline-tick-dot {
+  background: var(--color-accent);
+  transform: scale(1.5);
+}
+
+/* Horizontal scroll track */
+.timeline-track {
+  display: flex;
+  gap: var(--space-lg);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: var(--space-md);
+  padding: var(--space-lg) max(var(--space-md), calc((100vw - 420px) / 2));
+  margin: 0;
+  list-style: none;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+
+.timeline-card {
+  flex: 0 0 min(420px, 85vw);
+  scroll-snap-align: center;
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border: var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-height: 420px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.timeline-card:hover {
+  border-color: var(--color-text-muted);
+}
+
+.timeline-card--highlight {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.1);
+}
+
+.timeline-card .card-year {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-accent);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-card .card-title {
+  margin: 0;
+  font-size: var(--size-h3);
+  line-height: 1.2;
+}
+
+.timeline-card p {
+  font-size: var(--size-sm);
+  color: var(--color-text);
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* Artefacts */
+.card-artefact {
+  margin-top: auto;
+  padding: var(--space-sm);
+  background: var(--color-bg);
+  border-radius: 8px;
+  border: var(--border);
+  font-size: var(--size-xs);
+}
+
+.card-artefact--code code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--size-xs);
+  line-height: 1.6;
+  display: block;
+  white-space: pre-wrap;
+}
+
+.tok-sel { color: #d73a49; }
+.tok-prop { color: #005cc5; }
+.tok-val { color: #22863a; }
+.tok-num { color: #e36209; }
+
+@media (prefers-color-scheme: dark) {
+  .tok-sel { color: #ff7b72; }
+  .tok-prop { color: #79c0ff; }
+  .tok-val { color: #7ee787; }
+  .tok-num { color: #ffa657; }
+}
+
+/* Memo note (1989) */
+.memo-note {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: var(--size-base);
+  color: var(--color-text);
+  padding-bottom: var(--space-xs);
+}
+
+.memo-byline {
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+}
+
+/* Spacer demo (1995) */
+.spacer-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.spacer-label {
+  color: var(--color-text-muted);
+}
+
+.spacer-checker {
+  width: 200px;
+  height: 24px;
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  border: 1px dashed var(--color-text-muted);
+}
+
+/* File names list (2000) */
+.file-names {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+}
+
+/* WHOIS record (2002) */
+.whois-line {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  padding: 2px 0;
+}
+
+.whois-line + .whois-line {
+  border-top: 1px dashed var(--color-border);
+}
+
+.whois-line span:first-child {
+  color: var(--color-text-muted);
+}
+
+/* Retina border demo (2010) */
+.border-demo {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  padding: var(--space-sm) 0;
+}
+
+.border-sample {
+  width: 40px;
+  height: 40px;
+  border-style: solid;
+  border-color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.border-sample--1x { border-width: 1px; }
+.border-sample--2x { border-width: 2px; }
+.border-sample--3x { border-width: 3px; }
+
+.border-caption {
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* Stat (2012) */
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* Badges (2014, 2020) */
+.card-artefact--badges {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.dpr-badge, .unit-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: var(--border);
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+}
+
+.dpr-badge--new {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.unit-badge {
+  color: var(--color-text);
+}
+
+/* Outro card (2024) */
+.outro-domain {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.outro-sub {
+  font-size: var(--size-xs);
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* Outro section */
+.history-outro {
+  max-width: var(--measure);
+  margin: var(--space-xl) auto;
+  padding: 0 var(--space-md);
+}
+
+.history-outro h2 {
+  margin-top: 0;
+}
+
+/* Reduced motion: disable smooth scroll and snapping */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-track {
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+  }
+  .timeline-tick-dot {
+    transition: none;
+  }
+}
+
 /* --- Print --- */
 @media print {
   .domain-banner,

@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TrustLine from '../components/TrustLine.astro';
+
+const publishDate = '2026-04-17';
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "A History of the Pixel: Thirty-Five Years of the Web's Smallest Unit",
+    "description": "From Tim Berners-Lee's 1989 proposal to the retina displays of today — how the pixel shaped the web, told through the milestones that made 1px.com's era.",
+    "image": "https://1px.com/og-image.png",
+    "datePublished": publishDate,
+    "dateModified": publishDate,
+    "author": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "publisher": { "@type": "Organization", "name": "1px.com", "url": "https://1px.com" },
+    "mainEntityOfPage": "https://1px.com/history/",
+  },
+];
+
+// Years used by the ruler for active highlighting
+const years = [1989, 1993, 1995, 1996, 2000, 2002, 2003, 2005, 2010, 2012, 2014, 2017, 2020, 2024];
+---
+
+<BaseLayout
+  title="A History of the Pixel: 35 Years of the Web's Smallest Unit"
+  description="An interactive timeline from Berners-Lee's 1989 proposal to modern retina displays — how the pixel shaped the web, and where 1px.com fits in that story."
+  ogType="article"
+  publishDate={publishDate}
+  schema={schema}
+>
+  <Breadcrumbs current="History" />
+
+  <article class="history-article">
+    <header class="history-intro">
+      <h1>A History of the Pixel</h1>
+      <p class="lede">Thirty-five years of the web's smallest meaningful unit — and the domain it's named after.</p>
+      <p class="history-hint" aria-hidden="true">← drag or swipe to scroll through time →</p>
+    </header>
+
+    <nav class="timeline-ruler" aria-label="Timeline years">
+      {years.map((y) => (
+        <a href={`#y${y}`} class="timeline-tick" data-year={y}>
+          <span class="timeline-tick-year">{y}</span>
+          <span class="timeline-tick-dot" aria-hidden="true"></span>
+        </a>
+      ))}
+    </nav>
+
+    <ol class="timeline-track" role="list">
+      <li class="timeline-card" id="y1989">
+        <div class="card-year">1989</div>
+        <h2 class="card-title">The Memo</h2>
+        <p>At CERN, Tim Berners-Lee submits a proposal titled <em>Information Management: A Proposal</em>. It describes a system of linked documents — a "web" of information. His boss pencils three words on the first page.</p>
+        <div class="card-artefact card-artefact--memo">
+          <div class="memo-note">"Vague but exciting..."</div>
+          <div class="memo-byline">— Mike Sendall's margin note on the proposal</div>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y1993">
+        <div class="card-year">1993</div>
+        <h2 class="card-title">Images Arrive</h2>
+        <p>Marc Andreessen ships Mosaic 1.0. He and Eric Bina propose the <code>&lt;img&gt;</code> tag on www-talk. For the first time, the pixel becomes part of the web — and designers start asking for layout control HTML doesn't offer.</p>
+        <div class="card-artefact card-artefact--code">
+          <code>&lt;img src="ncsa.gif" width="88" height="31"&gt;</code>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y1995">
+        <div class="card-year">1995</div>
+        <h2 class="card-title">The Spacer Arrives</h2>
+        <p>David Siegel's book <em>Creating Killer Web Sites</em> popularizes the 1×1 transparent GIF as a layout tool. For the next decade, spacer.gif is the most-requested image on the web — referenced hundreds of times per page.</p>
+        <div class="card-artefact card-artefact--spacer">
+          <div class="spacer-demo" aria-hidden="true">
+            <span class="spacer-label">1×1 GIF stretched to 200×24:</span>
+            <div class="spacer-checker"></div>
+          </div>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y1996">
+        <div class="card-year">1996</div>
+        <h2 class="card-title">CSS Is Born</h2>
+        <p>Håkon Wium Lie and Bert Bos publish CSS Level 1 as a W3C recommendation. The <code>px</code> unit is formally defined as an angular measurement — not a hardware pixel. Browser support will take years.</p>
+        <div class="card-artefact card-artefact--code">
+          <code><span class="tok-sel">body</span> &#123; <span class="tok-prop">font-family</span>: sans-serif; &#125;</code>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2000">
+        <div class="card-year">2000</div>
+        <h2 class="card-title">Peak Spacer</h2>
+        <p>At the dot-com peak, the largest websites on Earth — Yahoo, MSN, AOL — render their layouts with nested tables and 1×1 transparent GIFs. The same 43-byte file is cached in every browser under many names.</p>
+        <div class="card-artefact card-artefact--list">
+          <ul class="file-names">
+            <li>spacer.gif</li>
+            <li>pixel.gif</li>
+            <li>clear.gif</li>
+            <li>shim.gif</li>
+            <li>blank.gif</li>
+          </ul>
+        </div>
+      </li>
+
+      <li class="timeline-card timeline-card--highlight" id="y2002">
+        <div class="card-year">2002</div>
+        <h2 class="card-title">A Domain Is Born</h2>
+        <p>On May 4, <strong>1px.com</strong> is registered. At this moment, the top 1,000 websites on Earth still render their layouts with tables and transparent pixels. The era the domain lives in is written into its name.</p>
+        <div class="card-artefact card-artefact--whois">
+          <div class="whois-line"><span>Domain:</span><span>1px.com</span></div>
+          <div class="whois-line"><span>Created:</span><span>2002-05-04</span></div>
+          <div class="whois-line"><span>Status:</span><span>available</span></div>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2003">
+        <div class="card-year">2003</div>
+        <h2 class="card-title">Standards Strike Back</h2>
+        <p>Jeffrey Zeldman publishes <em>Designing with Web Standards</em>. It argues that the layout hacks of the table era were a historical necessity — and that the time has come to leave them behind. CSS-based layout goes mainstream.</p>
+        <div class="card-artefact card-artefact--code">
+          <code>&lt;!DOCTYPE html PUBLIC<br />&nbsp;&nbsp;"-//W3C//DTD XHTML 1.0 Strict"...&gt;</code>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2005">
+        <div class="card-year">2005</div>
+        <h2 class="card-title">Floats Take Over</h2>
+        <p>Browser support for CSS is finally mature enough. Tables give way to floats. The spacer GIF — after ten years of service — quietly disappears from new sites. Most designers never notice its absence.</p>
+        <div class="card-artefact card-artefact--code">
+          <code><span class="tok-sel">.sidebar</span> &#123; <span class="tok-prop">float</span>: <span class="tok-val">left</span>; <span class="tok-prop">width</span>: <span class="tok-num">240px</span>; &#125;</code>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2010">
+        <div class="card-year">2010</div>
+        <h2 class="card-title">1 ≠ 1</h2>
+        <p>Steve Jobs unveils the iPhone 4 Retina display on June 7. On a mainstream device for the first time, 1 CSS pixel no longer equals 1 hardware pixel. The same month, Ethan Marcotte coins <em>Responsive Web Design</em>.</p>
+        <div class="card-artefact card-artefact--borders">
+          <div class="border-demo">
+            <div class="border-sample border-sample--1x"><span>1×</span></div>
+            <div class="border-sample border-sample--2x"><span>2×</span></div>
+            <div class="border-sample border-sample--3x"><span>3×</span></div>
+          </div>
+          <div class="border-caption">Same <code>1px</code> border at three pixel ratios.</div>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2012">
+        <div class="card-year">2012</div>
+        <h2 class="card-title">Retina Reaches Desktop</h2>
+        <p>The Retina MacBook Pro ships with a 2880×1800 display. The hairline border problem — previously confined to mobile — arrives on every designer's desk. CSS <code>0.5px</code> enters the vocabulary.</p>
+        <div class="card-artefact card-artefact--stat">
+          <div class="stat-value">2880 × 1800</div>
+          <div class="stat-label">pixels in a 15.4-inch panel</div>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2014">
+        <div class="card-year">2014</div>
+        <h2 class="card-title">Three Times Density</h2>
+        <p>The iPhone 6 Plus introduces 3× displays. Borders must now survive not just 1× and 2×, but 3× and the fractional scaling between them. The word <em>hairline</em> becomes design-system vocabulary.</p>
+        <div class="card-artefact card-artefact--badges">
+          <span class="dpr-badge">@1x</span>
+          <span class="dpr-badge">@2x</span>
+          <span class="dpr-badge dpr-badge--new">@3x</span>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2017">
+        <div class="card-year">2017</div>
+        <h2 class="card-title">Grid Ships</h2>
+        <p>CSS Grid lands in every major browser within weeks of each other. For the first time in web history, the platform's layout primitives are sufficient. Tables, floats, and flex hacks recede into legend.</p>
+        <div class="card-artefact card-artefact--code">
+          <code><span class="tok-prop">display</span>: <span class="tok-val">grid</span>;<br /><span class="tok-prop">grid-template-columns</span>: <span class="tok-num">1fr</span> <span class="tok-num">2fr</span>;</code>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2020">
+        <div class="card-year">2020</div>
+        <h2 class="card-title">The Viewport Gets Honest</h2>
+        <p>The CSS working group introduces <code>dvh</code>, <code>svh</code>, and <code>lvh</code> — viewport units that account for mobile browser chrome. The fundamental unit is still the pixel, but it now understands dynamic contexts.</p>
+        <div class="card-artefact card-artefact--badges">
+          <span class="unit-badge">dvh</span>
+          <span class="unit-badge">svh</span>
+          <span class="unit-badge">lvh</span>
+        </div>
+      </li>
+
+      <li class="timeline-card" id="y2024">
+        <div class="card-year">2024</div>
+        <h2 class="card-title">Still 1px</h2>
+        <p>Large language models generate UI from text. Design tools export production code. And yet, thirty-five years in, the smallest meaningful unit of a web layout is still the pixel. The era that <strong>1px.com</strong> was registered in never ended.</p>
+        <div class="card-artefact card-artefact--outro">
+          <div class="outro-domain">1px.com</div>
+          <div class="outro-sub">22 years old. Still defining the unit.</div>
+        </div>
+      </li>
+    </ol>
+
+    <section class="history-outro">
+      <h2>A piece of web archaeology</h2>
+      <p><strong>1px.com</strong> was registered in the middle of the spacer.gif era. It has been continuously owned for more than two decades, through every shift on this timeline. That history is part of what makes it a premium domain.</p>
+      <aside class="article-cta">
+        <p>The domain <strong>1px.com</strong> is available for purchase.</p>
+        <a href="https://forsale.godaddy.com/forsale/1px.com" class="cta-button" rel="noopener" data-cta="history">Make an Offer</a>
+        <TrustLine />
+      </aside>
+    </section>
+  </article>
+
+  <script is:inline>
+    // Highlight the ruler tick that matches the visible card.
+    (function () {
+      var ruler = document.querySelector('.timeline-ruler');
+      var track = document.querySelector('.timeline-track');
+      if (!ruler || !track || !('IntersectionObserver' in window)) return;
+
+      var cards = Array.prototype.slice.call(track.querySelectorAll('.timeline-card'));
+      var tickFor = function (id) { return ruler.querySelector('[href="#' + id + '"]'); };
+
+      var setActive = function (id) {
+        ruler.querySelectorAll('.timeline-tick--active').forEach(function (el) {
+          el.classList.remove('timeline-tick--active');
+        });
+        var tick = tickFor(id);
+        if (tick) tick.classList.add('timeline-tick--active');
+      };
+
+      var io = new IntersectionObserver(function (entries) {
+        // Pick the entry with the largest intersection ratio
+        var best = null;
+        entries.forEach(function (e) {
+          if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
+            best = e;
+          }
+        });
+        if (best) setActive(best.target.id);
+      }, { root: track, threshold: [0.5, 0.75, 1] });
+
+      cards.forEach(function (c) { io.observe(c); });
+
+      // Default-highlight the first card on load.
+      setActive(cards[0].id);
+    })();
+  </script>
+</BaseLayout>
