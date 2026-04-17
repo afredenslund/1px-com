@@ -1,5 +1,29 @@
 ---
+import TrustLine from './TrustLine.astro';
+
 const currentYear = new Date().getFullYear();
+const registeredYear = 2002;
+const age = currentYear - registeredYear;
+
+const articles = [
+  { href: '/', label: '1px.com' },
+  { href: '/history/', label: 'History' },
+  { href: '/spacer-gif-history/', label: 'Spacer GIF' },
+  { href: '/1px-css-borders/', label: '1px Borders' },
+  { href: '/px-unit-explained/', label: 'PX Unit' },
+  { href: '/power-of-one/', label: 'Power of 1' },
+  { href: '/about-this-domain/', label: 'About Domain' },
+];
+
+const references = [
+  { href: 'https://www.w3.org/TR/CSS/', label: 'W3C CSS Specification' },
+  { href: 'https://developer.mozilla.org/en-US/docs/Web/CSS/length', label: 'MDN: CSS <length>' },
+  { href: 'https://en.wikipedia.org/wiki/Spacer_GIF', label: 'Wikipedia: Spacer GIF' },
+  { href: 'https://en.wikipedia.org/wiki/Cascading_Style_Sheets', label: 'Wikipedia: CSS' },
+  { href: 'https://en.wikipedia.org/wiki/Pixel', label: 'Wikipedia: Pixel' },
+  { href: 'https://www.w3.org/History/1989/proposal.html', label: 'CERN: 1989 Proposal' },
+  { href: 'https://alistapart.com/article/responsive-web-design/', label: 'Responsive Web Design' },
+];
 ---
 
 <footer class="site-footer">
@@ -7,12 +31,45 @@ const currentYear = new Date().getFullYear();
     <h2>Acquire 1px.com</h2>
     <p>A rare 3-character .com domain with deep roots in web history. Own the canonical address for the pixel that built the internet.</p>
     <a href="https://forsale.godaddy.com/forsale/1px.com" class="cta-button" rel="noopener" data-cta="footer">Make an Offer</a>
-    <p class="trust-line">
-      <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-      Secure transaction through GoDaddy. Buyer protection guaranteed.
-    </p>
+    <TrustLine />
   </div>
+
+  <div class="footer-fat">
+    <section class="footer-col">
+      <h3 class="footer-col-title">1px.com</h3>
+      <p class="footer-tagline">A premium 3-character .com, registered {registeredYear}. {age} years of web history in a three-character name.</p>
+      <dl class="footer-facts">
+        <div>
+          <dt>Created</dt>
+          <dd><time datetime={`${registeredYear}-05-04`}>May 4, {registeredYear}</time></dd>
+        </div>
+        <div>
+          <dt>Lighthouse</dt>
+          <dd>100 / 100 / 100 / 100</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="footer-col">
+      <h3 class="footer-col-title">Articles</h3>
+      <ul>
+        {articles.map(({ href, label }) => (
+          <li><a href={href}>{label}</a></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="footer-col">
+      <h3 class="footer-col-title">References</h3>
+      <ul>
+        {references.map(({ href, label }) => (
+          <li><a href={href} rel="noopener" target="_blank">{label} <span class="footer-ext" aria-hidden="true">↗</span></a></li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
   <div class="footer-meta">
-    <p>&copy; {currentYear} 1px.com</p>
+    <p>&copy; {currentYear} 1px.com · <a href="/sitemap-index.xml">Sitemap</a></p>
   </div>
 </footer>

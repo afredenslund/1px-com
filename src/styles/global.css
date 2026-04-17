@@ -818,11 +818,119 @@ pre code {
   color: var(--color-text-muted);
 }
 
+/* --- Fat Footer --- */
+.footer-fat {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-md);
+  max-width: calc(var(--measure) + var(--space-lg) * 2);
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .footer-fat {
+    grid-template-columns: 1fr 1fr 1.2fr;
+    gap: var(--space-xl);
+  }
+}
+
+.footer-col {
+  min-width: 0;
+}
+
+.footer-col-title {
+  font-size: var(--size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-sm);
+  font-weight: 600;
+}
+
+.footer-tagline {
+  font-size: var(--size-sm);
+  color: var(--color-text);
+  margin: 0 0 var(--space-sm);
+  max-width: 32ch;
+}
+
+.footer-facts {
+  margin: 0;
+  display: grid;
+  gap: var(--space-xs);
+  font-size: var(--size-xs);
+}
+
+.footer-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 2px 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.footer-facts dt {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.footer-facts dd {
+  margin: 0;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-col li {
+  margin: 0;
+}
+
+.footer-col a {
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+}
+
+.footer-col a:hover {
+  color: var(--color-text);
+}
+
+.footer-ext {
+  font-size: 0.7em;
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
 .footer-meta {
   text-align: center;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-md) var(--space-md);
   font-size: var(--size-xs);
   color: var(--color-text-muted);
+  border-top: var(--border);
+}
+
+.footer-meta a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer-meta a:hover {
+  color: var(--color-text);
 }
 
 /* --- Related Articles --- */
