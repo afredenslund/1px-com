@@ -273,14 +273,8 @@ pre code {
 }
 
 .sticky-top.scrolled .domain-banner {
-  height: 2rem;
-}
-
-@media (min-width: 768px) {
-  .sticky-top.scrolled .domain-banner {
-    height: 1.75rem;
-    font-size: var(--size-xs);
-  }
+  height: 1.75rem;
+  font-size: var(--size-xs);
 }
 
 .domain-banner p {
