@@ -711,7 +711,7 @@ pre code {
     left: var(--nav-indicator-left, 0);
     width: var(--nav-indicator-width, 0);
     height: 2px;
-    background: var(--color-border);
+    background: color-mix(in srgb, var(--color-border), var(--color-text-muted));
     opacity: var(--nav-indicator-opacity, 0);
     transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
                 width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
