@@ -212,11 +212,12 @@ const years = [1989, 1993, 1995, 1996, 2000, 2002, 2003, 2005, 2010, 2012, 2014,
   </article>
 
   <script is:inline>
-    // Highlight the ruler tick that matches the visible card.
+    // Highlight the ruler tick that matches the visible card, and make
+    // tick clicks scroll the track horizontally without jumping the page.
     (function () {
       var ruler = document.querySelector('.timeline-ruler');
       var track = document.querySelector('.timeline-track');
-      if (!ruler || !track || !('IntersectionObserver' in window)) return;
+      if (!ruler || !track) return;
 
       var cards = Array.prototype.slice.call(track.querySelectorAll('.timeline-card'));
       var tickFor = function (id) { return ruler.querySelector('[href="#' + id + '"]'); };
@@ -229,20 +230,54 @@ const years = [1989, 1993, 1995, 1996, 2000, 2002, 2003, 2005, 2010, 2012, 2014,
         if (tick) tick.classList.add('timeline-tick--active');
       };
 
-      var io = new IntersectionObserver(function (entries) {
-        // Pick the entry with the largest intersection ratio
-        var best = null;
-        entries.forEach(function (e) {
-          if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
-            best = e;
+      var scrollToCard = function (card) {
+        var target = card.offsetLeft - (track.clientWidth / 2) + (card.offsetWidth / 2);
+        track.scrollTo({ left: target, behavior: 'smooth' });
+      };
+
+      // Intercept tick clicks so we scroll the track, not the page.
+      ruler.addEventListener('click', function (e) {
+        var tick = e.target.closest('[data-year]');
+        if (!tick) return;
+        e.preventDefault();
+        var id = 'y' + tick.getAttribute('data-year');
+        var card = document.getElementById(id);
+        if (card) {
+          scrollToCard(card);
+          setActive(id);
+          if (history.replaceState) {
+            history.replaceState(null, '', '#' + id);
           }
-        });
-        if (best) setActive(best.target.id);
-      }, { root: track, threshold: [0.5, 0.75, 1] });
+        }
+      });
 
-      cards.forEach(function (c) { io.observe(c); });
+      // If the page loaded with a hash, scroll the track to that card
+      // (without the browser's default vertical jump).
+      if (location.hash) {
+        var card = document.getElementById(location.hash.slice(1));
+        if (card && cards.indexOf(card) !== -1) {
+          // Reset any vertical scroll the browser applied
+          window.scrollTo(0, 0);
+          // Use instant to avoid animation on load
+          var target = card.offsetLeft - (track.clientWidth / 2) + (card.offsetWidth / 2);
+          track.scrollLeft = target;
+        }
+      }
 
-      // Default-highlight the first card on load.
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          var best = null;
+          entries.forEach(function (e) {
+            if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
+              best = e;
+            }
+          });
+          if (best) setActive(best.target.id);
+        }, { root: track, threshold: [0.5, 0.75, 1] });
+
+        cards.forEach(function (c) { io.observe(c); });
+      }
+
       setActive(cards[0].id);
     })();
   </script>
