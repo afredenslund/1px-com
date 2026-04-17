@@ -272,9 +272,11 @@ pre code {
               opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sticky-top.scrolled .domain-banner {
-  height: 1.75rem;
-  font-size: var(--size-xs);
+@media (min-width: 768px) {
+  .sticky-top.scrolled .domain-banner {
+    height: 1.75rem;
+    font-size: var(--size-xs);
+  }
 }
 
 .domain-banner p {
@@ -293,9 +295,11 @@ pre code {
   white-space: nowrap;
 }
 
-.sticky-top.scrolled .domain-banner strong {
-  opacity: 0;
-  max-width: 0;
+@media (min-width: 768px) {
+  .sticky-top.scrolled .domain-banner strong {
+    opacity: 0;
+    max-width: 0;
+  }
 }
 
 .domain-banner strong {
