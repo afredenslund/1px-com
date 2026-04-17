@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import RelatedArticles from '../../components/RelatedArticles.astro';
 import TrustLine from '../../components/TrustLine.astro';
+import PioneerQuote from '../../components/PioneerQuote.astro';
 
 const codeThemes = { light: 'github-light', dark: 'github-dark-dimmed' } as const;
 
@@ -145,6 +146,18 @@ const codeBorderImage = `.hairline-gradient {
     </table>
 
     <p>The visual difference is significant. On a 2x display, a <code>1px</code> border looks twice as thick as it would on a standard display. Compared to native iOS or Android UI elements — which render true 1-physical-pixel dividers — CSS borders appear heavy and clunky.</p>
+
+    <PioneerQuote
+      author="Steve Jobs"
+      role="introducing the iPhone 4 Retina display"
+      year={2010}
+      source="Apple WWDC 2010 keynote"
+    >
+      <Fragment slot="quote">It turns out there's a magic number right around 300 pixels per inch, that when you hold something around 10 to 12 inches away from your eye, is the limit of the human retina to differentiate the pixels.</Fragment>
+      <Fragment slot="context">
+        <p>Jobs unveiled the iPhone 4 on June 7, 2010 with a 326 ppi display — doubling the resolution of every previous iPhone. This was the moment when "1 CSS pixel = 1 hardware pixel" stopped being true for a mainstream device, and the retina-border problem entered every web developer's toolbox. Within two years, 2x displays were the default across Apple's lineup; 3x followed with the iPhone 6 Plus in 2014.</p>
+      </Fragment>
+    </PioneerQuote>
 
     <h2>The Device Pixel Ratio</h2>
 

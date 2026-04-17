@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import RelatedArticles from '../components/RelatedArticles.astro';
 import TrustLine from '../components/TrustLine.astro';
+import PioneerQuote from '../components/PioneerQuote.astro';
 
 const codeThemes = { light: 'github-light', dark: 'github-dark-dimmed' } as const;
 
@@ -104,6 +105,19 @@ const codeClamp = `h1 {
     </ul>
 
     <p>The CSS pixel is therefore a <strong>reference pixel</strong> — an abstraction layer between the developer's intent and the hardware's capabilities. This is why <a href="/1px-css-borders/">rendering a true 1-pixel border on retina displays</a> requires special techniques.</p>
+
+    <PioneerQuote
+      author="Håkon Wium Lie & Bert Bos"
+      role="co-creators of CSS"
+      year={2011}
+      source="W3C CSS 2.1 Recommendation, §4.3.2"
+      sourceUrl="https://www.w3.org/TR/CSS21/syndata.html#length-units"
+    >
+      <Fragment slot="quote">The reference pixel is the visual angle of one pixel on a device with a pixel density of 96dpi and a distance from the reader of an arm's length.</Fragment>
+      <Fragment slot="context">
+        <p>Lie and Bos drafted the original CSS specification in the mid-1990s and have edited every major revision since. Their decision to define <code>px</code> as a visual angle rather than a hardware pixel was prescient: it meant CSS layouts would scale gracefully onto the retina displays that arrived a decade later. The cost was that "1px" permanently stopped meaning "one physical dot" — a source of confusion ever since.</p>
+      </Fragment>
+    </PioneerQuote>
 
     <h2>The PX vs REM Debate</h2>
 

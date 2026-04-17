@@ -248,6 +248,79 @@ pre code {
   }
 }
 
+/* --- Pioneer Quotes --- */
+.pioneer-quote {
+  margin: var(--space-lg) 0;
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-surface);
+  border-radius: 0 6px 6px 0;
+  transition: background-color 0.15s;
+}
+
+.pioneer-quote > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
+  position: relative;
+}
+
+.pioneer-quote > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pioneer-quote > summary::after {
+  content: '＋';
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.pioneer-quote[open] > summary::after {
+  content: '−';
+}
+
+.pioneer-quote:hover {
+  background: var(--color-bg);
+}
+
+.pioneer-quote blockquote {
+  margin: 0 0 var(--space-xs) 0;
+  padding: 0;
+  font-style: italic;
+  font-size: var(--size-base);
+  color: var(--color-text);
+  border: none;
+}
+
+.pioneer-quote cite {
+  display: block;
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
+  font-style: normal;
+}
+
+.pioneer-context {
+  padding: 0 var(--space-md) var(--space-md) var(--space-lg);
+  font-size: var(--size-sm);
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-xs);
+  padding-top: var(--space-md);
+}
+
+.pioneer-context p {
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.pioneer-context .pioneer-source {
+  margin-top: var(--space-sm);
+  font-size: var(--size-xs);
+}
+
 /* --- Sticky Top Container --- */
 .sticky-top {
   position: sticky;

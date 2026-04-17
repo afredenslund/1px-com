@@ -1,0 +1,32 @@
+---
+interface Props {
+  author: string;
+  role?: string;
+  year?: string | number;
+  source?: string;
+  sourceUrl?: string;
+}
+
+const { author, role, year, source, sourceUrl } = Astro.props;
+---
+
+<details class="pioneer-quote">
+  <summary>
+    <blockquote>
+      <slot name="quote" />
+    </blockquote>
+    <cite>
+      — {author}{role ? `, ${role}` : ''}{year ? ` (${year})` : ''}
+    </cite>
+  </summary>
+  <div class="pioneer-context">
+    <slot name="context" />
+    {source && (
+      <p class="pioneer-source">
+        Source: {sourceUrl
+          ? <a href={sourceUrl} rel="noopener" target="_blank">{source}</a>
+          : source}
+      </p>
+    )}
+  </div>
+</details>

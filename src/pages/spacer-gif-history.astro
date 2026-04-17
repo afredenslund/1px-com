@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import RelatedArticles from '../components/RelatedArticles.astro';
 import TrustLine from '../components/TrustLine.astro';
+import PioneerQuote from '../components/PioneerQuote.astro';
 
 const publishDate = '2026-04-15';
 
@@ -126,6 +127,18 @@ const relatedArticles = [
     <p>CSS Level 1 was published as a W3C Recommendation in December 1996, but browser support was incomplete and inconsistent for years. Netscape Navigator 4 and Internet Explorer 4 each implemented CSS in their own buggy, incompatible ways. For practical layout work, CSS was unreliable.</p>
 
     <p>Designers needed a solution that worked <em>now</em>, across both major browsers. They found it in an HTML element that was never intended for layout: the <code>&lt;table&gt;</code>.</p>
+
+    <PioneerQuote
+      author="David Siegel"
+      role="author of Creating Killer Web Sites"
+      year={1997}
+      source="The Web is Ruined and I Ruined It, Web Review"
+    >
+      <Fragment slot="quote">I ruined the Web.</Fragment>
+      <Fragment slot="context">
+        <p>In his influential 1996 book <em>Creating Killer Web Sites</em>, Siegel championed the single-pixel GIF trick as a pragmatic way to force pixel-precise layouts onto a medium that lacked them. One year later — with CSS finally maturing — he published this mea culpa, arguing that turning HTML into a design tool had sacrificed the web's semantic foundation. The essay became a rallying cry for the web standards movement that followed.</p>
+      </Fragment>
+    </PioneerQuote>
 
     <h2>The Table Layout Era (1995–2003)</h2>
 
