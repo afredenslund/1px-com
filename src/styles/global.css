@@ -1128,6 +1128,9 @@ th {
   list-style: none;
   scroll-behavior: smooth;
   scrollbar-width: thin;
+  /* Soften the edges so adjacent cards fade out instead of being hard-clipped. */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 6rem, black calc(100% - 6rem), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, black 6rem, black calc(100% - 6rem), transparent 100%);
 }
 
 .timeline-card {
