@@ -264,21 +264,32 @@ const years = [1989, 1993, 1995, 1996, 2000, 2002, 2003, 2005, 2010, 2012, 2014,
         }
       }
 
-      if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (entries) {
-          var best = null;
-          entries.forEach(function (e) {
-            if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
-              best = e;
-            }
-          });
-          if (best) setActive(best.target.id);
-        }, { root: track, threshold: [0.5, 0.75, 1] });
+      // Pick the card whose center is closest to the track's visible center.
+      // Recomputing from scroll state (instead of IntersectionObserver deltas)
+      // means the highlight is always accurate, including mid-scroll.
+      var updateActive = function () {
+        var center = track.scrollLeft + track.clientWidth / 2;
+        var nearest = cards[0];
+        var best = Infinity;
+        for (var i = 0; i < cards.length; i++) {
+          var c = cards[i];
+          var d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - center);
+          if (d < best) { best = d; nearest = c; }
+        }
+        setActive(nearest.id);
+      };
 
-        cards.forEach(function (c) { io.observe(c); });
-      }
+      var rafPending = false;
+      track.addEventListener('scroll', function () {
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(function () {
+          rafPending = false;
+          updateActive();
+        });
+      }, { passive: true });
 
-      setActive(cards[0].id);
+      updateActive();
     })();
   </script>
 </BaseLayout>
