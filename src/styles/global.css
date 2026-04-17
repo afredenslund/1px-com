@@ -1128,9 +1128,16 @@ th {
   list-style: none;
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  /* Soften the edges so adjacent cards fade out instead of being hard-clipped. */
-  -webkit-mask-image: linear-gradient(to right, transparent 0, black 6rem, black calc(100% - 6rem), transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, black 6rem, black calc(100% - 6rem), transparent 100%);
+}
+
+/* On wider viewports adjacent cards are visible alongside the active one,
+   so fade their edges instead of hard-clipping. On mobile the card already
+   fills most of the width and the viewport edge is a natural boundary. */
+@media (min-width: 768px) {
+  .timeline-track {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 6rem, black calc(100% - 6rem), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, black 6rem, black calc(100% - 6rem), transparent 100%);
+  }
 }
 
 .timeline-card {
