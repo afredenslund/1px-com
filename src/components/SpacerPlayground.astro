@@ -841,8 +841,40 @@
     }
     window.addEventListener('resize', fitAll, { passive: true });
 
+    // Analytics: fire once on first view, once on first interaction.
+    // Lets us measure view rate and view→engage conversion without
+    // flooding GA with per-slider/per-toggle noise.
+    var viewFired = false;
+    var engageFired = false;
+    function track(name) {
+      if (typeof gtag !== 'function') return;
+      gtag('event', name, {
+        event_category: 'history_playground',
+        event_label: window.location.pathname,
+        transport_type: 'beacon'
+      });
+    }
+    function fireEngage() {
+      if (engageFired) return;
+      engageFired = true;
+      track('spacer_playground_engage');
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !viewFired) {
+            viewFired = true;
+            track('spacer_playground_view');
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.5 });
+      io.observe(root);
+    }
+
     root.querySelectorAll('[data-control]').forEach(function (el) {
       el.addEventListener('input', function () {
+        fireEngage();
         if (el.type === 'checkbox') {
           root.classList.toggle('show-spacers', el.checked);
         } else {
