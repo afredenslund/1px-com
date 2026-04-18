@@ -122,11 +122,22 @@
     </dl>
     <dl class="playground-stats-row playground-stats-row--modern">
       <div class="playground-stat">
-        <dt>Modern CSS equivalent</dt>
-        <dd>~<strong data-stat="modernBytes">0</strong><span class="playground-stat-unit">bytes</span></dd>
-        <div class="playground-stat-note">&lt;0.1s on any connection</div>
+        <dt>CSS-based equivalent (same layout)</dt>
+        <dd>~<strong data-stat="modernBytes">0</strong><span class="playground-stat-unit">bytes</span> · <strong data-stat="modernLines">0</strong><span class="playground-stat-unit">lines</span></dd>
+        <div class="playground-stat-note">Semantic HTML + a handful of CSS 2 rules. No tables. No spacer GIFs. No nested structure to debug.</div>
       </div>
     </dl>
+  </div>
+
+  <div class="playground-modern">
+    <div class="playground-modern-col">
+      <div class="playground-modern-label">HTML</div>
+      <pre class="playground-source playground-source--modern" aria-label="Modern HTML equivalent"><code data-modern-html></code></pre>
+    </div>
+    <div class="playground-modern-col">
+      <div class="playground-modern-label">CSS</div>
+      <pre class="playground-source playground-source--modern" aria-label="Modern CSS equivalent"><code data-modern-css></code></pre>
+    </div>
   </div>
 </figure>
 
@@ -373,6 +384,42 @@
   .playground-stats-row--modern .playground-stat dd strong {
     color: var(--color-accent, var(--color-text));
   }
+
+  .playground-modern {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+  }
+  @media (max-width: 640px) {
+    .playground-modern {
+      grid-template-columns: 1fr;
+    }
+  }
+  .playground-modern-col {
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .playground-modern-label {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    background: color-mix(in srgb, var(--color-accent, #0066cc) 6%, transparent);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .playground-source--modern {
+    flex: 1;
+    padding-bottom: 0.6rem;
+  }
   @media (max-width: 560px) {
     .playground-stats-row {
       grid-template-columns: 1fr;
@@ -522,15 +569,15 @@
       dialup: root.querySelector('[data-stat="dialup"]'),
       isdn: root.querySelector('[data-stat="isdn"]'),
       modernBytes: root.querySelector('[data-stat="modernBytes"]'),
+      modernLines: root.querySelector('[data-stat="modernLines"]'),
     };
-    // A realistic modern equivalent of this whole demo layout, inline-styled:
-    // <div style="display:grid;grid-template-columns:140px 1fr 20px;gap:20px;padding:8px;border:1px solid #003366">
-    //   <header style="grid-column:1/-1;background:#003366;color:#fff;padding:8px">Welcome to MyCompany.com</header>
-    //   <nav>...</nav>
-    //   <main>...</main>
-    //   <div></div>
-    // </div>
-    var MODERN_EQUIV_BYTES = 420;
+    // CSS 2 equivalent (floats), the style that actually replaced tables
+    // in the early 2000s. No flex, no grid — just semantic HTML + a few
+    // rules. Radically shorter, readable, debuggable.
+    var MODERN_HTML = '<div id="page">\n  <h1>Welcome to MyCompany.com</h1>\n  <div id="nav">\n    <b>Navigation</b><br>\n    <a href="#">Home</a><br>\n    <a href="#">About</a><br>\n    <a href="#">Products</a><br>\n    <a href="#">Contact</a>\n  </div>\n  <div id="main">Main content...</div>\n</div>';
+    var MODERN_CSS = '#page {\n  border: 1px solid #036;\n  overflow: hidden;\n}\n#page h1 {\n  margin: 0;\n  padding: 8px;\n  background: #036;\n  color: #fff;\n}\n#nav {\n  float: left;\n  width: 140px;\n  padding: 8px;\n  background: #eef3f8;\n}\n#main {\n  margin-left: 156px;\n  padding: 8px;\n}';
+    var MODERN_EQUIV_BYTES = new Blob([MODERN_HTML + MODERN_CSS]).size;
+    var MODERN_EQUIV_LINES = MODERN_HTML.split('\n').length + MODERN_CSS.split('\n').length;
     // 56K dial-up: ~56000 bits/s, realistic throughput ~5 KB/s after protocol overhead
     var DIALUP_BYTES_PER_SEC = 5000;
     // 128K ISDN: ~128000 bits/s, realistic throughput ~14 KB/s
@@ -543,8 +590,33 @@
       if (display) display.textContent = value;
     }
 
+    var modernHtmlEl = root.querySelector('[data-modern-html]');
+    var modernCssEl = root.querySelector('[data-modern-css]');
+
     function escapeHtml(s) {
       return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function highlightCss(line) {
+      var esc = escapeHtml(line);
+      // Comments
+      esc = esc.replace(/\/\*[\s\S]*?\*\//g, function (m) { return '<span class="pg-c">' + m + '</span>'; });
+      // Selectors (line that ends with { or has no :)
+      if (/\{\s*$/.test(line)) {
+        esc = '<span class="pg-t">' + esc.replace(/\s*\{\s*$/, '') + '</span><span class="pg-p"> {</span>';
+      } else if (/^\s*\}/.test(line)) {
+        esc = esc.replace(/\}/, '<span class="pg-p">}</span>');
+      } else {
+        // property: value;
+        esc = esc.replace(/^(\s*)([\w-]+)(\s*:\s*)(.+?)(;?\s*)$/, function (_, lead, prop, sep, val, tail) {
+          return lead + '<span class="pg-a">' + prop + '</span><span class="pg-p">' + sep + '</span><span class="pg-v">' + val + '</span><span class="pg-p">' + tail + '</span>';
+        });
+      }
+      return esc;
+    }
+    function renderLines(text, highlightFn) {
+      return text.split('\n').map(function (l) {
+        return '<span class="pg-ln">' + (l.length ? highlightFn(l) : ' ') + '</span>';
+      }).join('');
     }
     function highlight(line) {
       var esc = escapeHtml(line);
@@ -609,10 +681,7 @@
         '  <!-- bottom frame -->\n' +
         '  <tr><td colspan="7" bgcolor="#003366">' + S + '</td></tr>\n' +
         '</table>';
-      var lines = src.split('\n').map(function (l) {
-        return '<span class="pg-ln">' + (l.length ? highlight(l) : ' ') + '</span>';
-      }).join('');
-      sourceEl.innerHTML = lines;
+      sourceEl.innerHTML = renderLines(src, highlight);
 
       var bytes = new Blob([src]).size;
       var spacerCount = (src.match(/spacer\.gif/g) || []).length;
@@ -621,22 +690,31 @@
       statEls.dialup.textContent = (bytes / DIALUP_BYTES_PER_SEC).toFixed(1);
       statEls.isdn.textContent = (bytes / ISDN_BYTES_PER_SEC).toFixed(2);
       statEls.modernBytes.textContent = MODERN_EQUIV_BYTES;
+      statEls.modernLines.textContent = MODERN_EQUIV_LINES;
 
-      fitSource();
+      fitBlock(sourceEl);
     }
 
-    // Shrink the source code via CSS zoom so the widest line just fits the
-    // panel — gives an overview of the markup without wrapping. Capped at 1
-    // so we never scale up and never go below 0.55 (illegible territory).
-    function fitSource() {
-      sourceEl.style.zoom = '';
-      var natural = sourceEl.scrollWidth;
-      var avail = sourceEl.parentElement.clientWidth;
+    // Shrink each source block via CSS zoom so its widest line just fits
+    // the panel — gives an overview of the markup without wrapping. Capped
+    // at 1 so we never scale up, and never below 0.55 (illegible territory).
+    function fitBlock(el) {
+      if (!el) return;
+      el.style.zoom = '';
+      el.style.width = 'max-content';
+      var natural = el.offsetWidth;
+      el.style.width = '';
+      var avail = el.parentElement.clientWidth;
       if (!natural || !avail) return;
       var ratio = Math.min(1, avail / natural);
-      sourceEl.style.zoom = Math.max(0.55, ratio).toFixed(3);
+      el.style.zoom = Math.max(0.55, ratio).toFixed(3);
     }
-    window.addEventListener('resize', fitSource, { passive: true });
+    function fitAll() {
+      fitBlock(sourceEl);
+      fitBlock(modernHtmlEl);
+      fitBlock(modernCssEl);
+    }
+    window.addEventListener('resize', fitAll, { passive: true });
 
     root.querySelectorAll('[data-control]').forEach(function (el) {
       el.addEventListener('input', function () {
@@ -654,6 +732,12 @@
     setVar('gutter', state.gutter);
     var showSpacers = root.querySelector('[data-control="show-spacers"]');
     if (showSpacers && showSpacers.checked) root.classList.add('show-spacers');
+    if (modernHtmlEl) modernHtmlEl.innerHTML = renderLines(MODERN_HTML, highlight);
+    if (modernCssEl) modernCssEl.innerHTML = renderLines(MODERN_CSS, highlightCss);
     renderSource();
+    requestAnimationFrame(function () {
+      fitBlock(modernHtmlEl);
+      fitBlock(modernCssEl);
+    });
   });
 </script>
