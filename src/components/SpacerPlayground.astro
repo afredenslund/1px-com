@@ -120,13 +120,28 @@
         <div class="playground-stat-note">to download</div>
       </div>
     </dl>
-    <dl class="playground-stats-row playground-stats-row--modern">
-      <div class="playground-stat">
-        <dt>CSS-based equivalent (same layout)</dt>
-        <dd>~<strong data-stat="modernBytes">0</strong><span class="playground-stat-unit">bytes</span> · <strong data-stat="modernLines">0</strong><span class="playground-stat-unit">lines</span></dd>
-        <div class="playground-stat-note">Semantic HTML + a handful of CSS 2 rules. No tables. No spacer GIFs. No nested structure to debug.</div>
+    <div class="playground-compare">
+      <div class="playground-compare-headline">
+        <span class="playground-compare-num" data-stat="reductionPct">0</span><span class="playground-compare-unit">% less code</span>
+        <span class="playground-compare-note">when you swap tables &amp; spacer GIFs for CSS 2 floats</span>
       </div>
-    </dl>
+      <div class="playground-compare-bars">
+        <div class="playground-compare-row">
+          <div class="playground-compare-row-label">Tables + spacer GIFs</div>
+          <div class="playground-compare-row-bar">
+            <div class="playground-compare-row-fill playground-compare-row-fill--old" data-bar="old"></div>
+            <span class="playground-compare-row-tag"><strong data-stat="bytes">0</strong> bytes · <strong data-stat="oldLines">0</strong> lines</span>
+          </div>
+        </div>
+        <div class="playground-compare-row">
+          <div class="playground-compare-row-label">CSS 2 floats</div>
+          <div class="playground-compare-row-bar">
+            <div class="playground-compare-row-fill playground-compare-row-fill--new" data-bar="new"></div>
+            <span class="playground-compare-row-tag">~<strong data-stat="modernBytes">0</strong> bytes · <strong data-stat="modernLines">0</strong> lines</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="playground-modern">
@@ -385,6 +400,101 @@
     color: var(--color-accent, var(--color-text));
   }
 
+  .playground-compare {
+    border-top: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-accent, #0066cc) 6%, transparent);
+    padding: 1rem 1.1rem 1.1rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .playground-compare-headline {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.6rem;
+    line-height: 1.1;
+  }
+  .playground-compare-num {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    color: var(--color-accent, var(--color-text));
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .playground-compare-unit {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  .playground-compare-note {
+    flex-basis: 100%;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+  }
+  .playground-compare-bars {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .playground-compare-row {
+    display: grid;
+    grid-template-columns: 10.5rem 1fr;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .playground-compare-row-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .playground-compare-row-bar {
+    position: relative;
+    height: 1.9rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .playground-compare-row-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    transition: width 320ms ease-out;
+  }
+  .playground-compare-row-fill--old {
+    background: repeating-linear-gradient(
+      45deg,
+      #ff3b30,
+      #ff3b30 4px,
+      #ffd60a 4px,
+      #ffd60a 8px
+    );
+    opacity: 0.85;
+  }
+  .playground-compare-row-fill--new {
+    background: var(--color-accent, #0066cc);
+    opacity: 0.75;
+  }
+  .playground-compare-row-tag {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 0.6rem;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text);
+    mix-blend-mode: normal;
+    z-index: 1;
+  }
+  @media (max-width: 520px) {
+    .playground-compare-row {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+  }
+
   .playground-modern {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -564,13 +674,22 @@
     var state = { sidebar: 140, rowgap: 20, gutter: 20 };
     var sourceEl = root.querySelector('[data-source]');
     var statEls = {
-      bytes: root.querySelector('[data-stat="bytes"]'),
+      bytes: root.querySelectorAll('[data-stat="bytes"]'),
       spacerCount: root.querySelector('[data-stat="spacerCount"]'),
       dialup: root.querySelector('[data-stat="dialup"]'),
       isdn: root.querySelector('[data-stat="isdn"]'),
-      modernBytes: root.querySelector('[data-stat="modernBytes"]'),
-      modernLines: root.querySelector('[data-stat="modernLines"]'),
+      modernBytes: root.querySelectorAll('[data-stat="modernBytes"]'),
+      modernLines: root.querySelectorAll('[data-stat="modernLines"]'),
+      oldLines: root.querySelector('[data-stat="oldLines"]'),
+      reductionPct: root.querySelector('[data-stat="reductionPct"]'),
     };
+    var barOld = root.querySelector('[data-bar="old"]');
+    var barNew = root.querySelector('[data-bar="new"]');
+    function setText(elOrList, value) {
+      if (!elOrList) return;
+      if (elOrList.forEach) elOrList.forEach(function(el){ el.textContent = value; });
+      else elOrList.textContent = value;
+    }
     // CSS 2 equivalent (floats), the style that actually replaced tables
     // in the early 2000s. No flex, no grid — just semantic HTML + a few
     // rules. Radically shorter, readable, debuggable.
@@ -685,12 +804,18 @@
 
       var bytes = new Blob([src]).size;
       var spacerCount = (src.match(/spacer\.gif/g) || []).length;
-      statEls.bytes.textContent = bytes.toLocaleString('en-US');
-      statEls.spacerCount.textContent = spacerCount;
-      statEls.dialup.textContent = (bytes / DIALUP_BYTES_PER_SEC).toFixed(1);
-      statEls.isdn.textContent = (bytes / ISDN_BYTES_PER_SEC).toFixed(2);
-      statEls.modernBytes.textContent = MODERN_EQUIV_BYTES;
-      statEls.modernLines.textContent = MODERN_EQUIV_LINES;
+      var oldLines = src.split('\n').length;
+      setText(statEls.bytes, bytes.toLocaleString('en-US'));
+      setText(statEls.spacerCount, spacerCount);
+      setText(statEls.dialup, (bytes / DIALUP_BYTES_PER_SEC).toFixed(1));
+      setText(statEls.isdn, (bytes / ISDN_BYTES_PER_SEC).toFixed(2));
+      setText(statEls.modernBytes, MODERN_EQUIV_BYTES);
+      setText(statEls.modernLines, MODERN_EQUIV_LINES);
+      setText(statEls.oldLines, oldLines);
+      var reduction = bytes > 0 ? Math.round((1 - MODERN_EQUIV_BYTES / bytes) * 100) : 0;
+      setText(statEls.reductionPct, reduction);
+      if (barOld) barOld.style.width = '100%';
+      if (barNew) barNew.style.width = (bytes > 0 ? Math.max(4, (MODERN_EQUIV_BYTES / bytes) * 100) : 0) + '%';
 
       fitBlock(sourceEl);
     }
