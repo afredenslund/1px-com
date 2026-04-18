@@ -270,8 +270,7 @@
     display: block;
     padding: 0 0.9rem 0 3.25rem;
     position: relative;
-    white-space: pre-wrap;
-    word-break: break-word;
+    white-space: pre;
   }
   .playground-source .pg-ln::before {
     content: counter(pg-line);
@@ -622,7 +621,22 @@
       statEls.dialup.textContent = (bytes / DIALUP_BYTES_PER_SEC).toFixed(1);
       statEls.isdn.textContent = (bytes / ISDN_BYTES_PER_SEC).toFixed(2);
       statEls.modernBytes.textContent = MODERN_EQUIV_BYTES;
+
+      fitSource();
     }
+
+    // Shrink the source code via CSS zoom so the widest line just fits the
+    // panel — gives an overview of the markup without wrapping. Capped at 1
+    // so we never scale up and never go below 0.55 (illegible territory).
+    function fitSource() {
+      sourceEl.style.zoom = '';
+      var natural = sourceEl.scrollWidth;
+      var avail = sourceEl.parentElement.clientWidth;
+      if (!natural || !avail) return;
+      var ratio = Math.min(1, avail / natural);
+      sourceEl.style.zoom = Math.max(0.55, ratio).toFixed(3);
+    }
+    window.addEventListener('resize', fitSource, { passive: true });
 
     root.querySelectorAll('[data-control]').forEach(function (el) {
       el.addEventListener('input', function () {
