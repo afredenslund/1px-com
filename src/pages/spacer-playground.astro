@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SpacerPlayground from '../components/SpacerPlayground.astro';
+
+// Unlinked test page for the SpacerPlayground component.
+// Excluded from sitemap via astro.config.mjs filter.
+---
+
+<BaseLayout
+  title="Spacer Playground (test)"
+  description="Internal test page for the SpacerPlayground component."
+>
+  <article>
+    <h1>Spacer Playground</h1>
+    <p style="color: var(--color-text-muted); font-style: italic;">Internal test page — not in sitemap, not linked from nav.</p>
+
+    <SpacerPlayground />
+  </article>
+</BaseLayout>

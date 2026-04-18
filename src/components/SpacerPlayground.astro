@@ -1,0 +1,649 @@
+---
+// Interactive playground that lets the reader recreate a 1998-style
+// table layout by manipulating the invisible spacer GIFs that hold it
+// together. Shows the generated HTML live on every change.
+---
+
+<figure class="spacer-playground" data-playground>
+  <figcaption>Drag the sliders to set spacer.gif dimensions. In authentic 1998 tables the spacer sets a <em>minimum</em> — if the content is wider than the spacer, the cell expands and breaks your layout. That was the whole problem.</figcaption>
+
+  <div class="playground-controls">
+    <label class="playground-toggle">
+      <input type="checkbox" data-control="show-spacers" checked />
+      <span>Show invisible spacers</span>
+    </label>
+
+    <label class="playground-slider">
+      <span class="playground-slider-label">Sidebar width</span>
+      <input type="range" min="40" max="240" value="140" data-control="sidebar" />
+      <span class="playground-slider-value"><span data-display="sidebar">140</span>px</span>
+    </label>
+
+    <label class="playground-slider">
+      <span class="playground-slider-label">Row gap</span>
+      <input type="range" min="0" max="60" value="20" data-control="rowgap" />
+      <span class="playground-slider-value"><span data-display="rowgap">20</span>px</span>
+    </label>
+
+    <label class="playground-slider">
+      <span class="playground-slider-label">Right gutter</span>
+      <input type="range" min="0" max="120" value="20" data-control="gutter" />
+      <span class="playground-slider-value"><span data-display="gutter">20</span>px</span>
+    </label>
+  </div>
+
+  <div class="playground-split">
+    <div class="playground-panel">
+      <div class="playground-panel-label">Rendered layout</div>
+      <div class="playground-preview">
+        <table class="playground-table" cellpadding="0" cellspacing="0" border="0" role="presentation">
+          <colgroup>
+            <col class="pg-col pg-col--line" />
+            <col class="pg-col pg-col--sidebar" />
+            <col class="pg-col pg-col--line" />
+            <col class="pg-col pg-col--main" />
+            <col class="pg-col pg-col--line" />
+            <col class="pg-col pg-col--gutter" />
+            <col class="pg-col pg-col--line" />
+          </colgroup>
+          <tr>
+            <td colspan="7" class="pg-line pg-line--h"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-top"></div></td>
+          </tr>
+          <tr>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-left"></div></td>
+            <td colspan="5" class="pg-header">Welcome to MyCompany.com</td>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-right"></div></td>
+          </tr>
+          <tr>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-left"></div></td>
+            <td colspan="5"><div class="pg-spacer pg-spacer--v" data-spacer="rowgap"></div></td>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-right"></div></td>
+          </tr>
+          <tr>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-left"></div></td>
+            <td colspan="5" class="pg-line pg-line--h"><div class="pg-spacer pg-spacer--1x1" data-spacer="hline"></div></td>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-right"></div></td>
+          </tr>
+          <tr>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-left"></div></td>
+            <td valign="top" class="pg-cell pg-cell--sidebar">
+              <div class="pg-spacer pg-spacer--h" data-spacer="sidebar"></div>
+              <div class="pg-cell-inner">
+                <strong>Navigation</strong><br />
+                <a href="#">Home</a><br />
+                <a href="#">About</a><br />
+                <a href="#">Products</a><br />
+                <a href="#">Contact</a>
+              </div>
+            </td>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="vline"></div></td>
+            <td valign="top" class="pg-cell pg-cell--main">
+              <div class="pg-cell-inner">
+                <p>This is the main content column. On the left, a <code>spacer.gif</code> is forcing the sidebar to its width. Without it, that column would collapse to nothing. Try pulling the <em>Sidebar width</em> slider to zero — watch what happens.</p>
+                <p>Every "border" you see — outer frame, header divider, vertical gutters — is a table cell with <code>bgcolor</code> set, holding a 1×1 transparent <code>spacer.gif</code> so the cell doesn't collapse. Toggle "Show invisible spacers" to count them.</p>
+              </div>
+            </td>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="vline"></div></td>
+            <td valign="top" class="pg-cell pg-cell--gutter">
+              <div class="pg-spacer pg-spacer--h" data-spacer="gutter"></div>
+            </td>
+            <td class="pg-line pg-line--v"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-right"></div></td>
+          </tr>
+          <tr>
+            <td colspan="7" class="pg-line pg-line--h"><div class="pg-spacer pg-spacer--1x1" data-spacer="frame-bottom"></div></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="playground-panel">
+      <div class="playground-panel-label">Generated HTML</div>
+      <pre class="playground-source" aria-label="Generated HTML source"><code data-source></code></pre>
+    </div>
+  </div>
+
+  <div class="playground-stats" aria-live="polite">
+    <dl class="playground-stats-row">
+      <div class="playground-stat">
+        <dt>HTML size</dt>
+        <dd><strong data-stat="bytes">0</strong><span class="playground-stat-unit">bytes</span></dd>
+        <div class="playground-stat-note"><span data-stat="spacerCount">0</span> spacer GIFs</div>
+      </div>
+      <div class="playground-stat">
+        <dt>56K dial-up</dt>
+        <dd><strong data-stat="dialup">0.0</strong><span class="playground-stat-unit">seconds</span></dd>
+        <div class="playground-stat-note">to download</div>
+      </div>
+      <div class="playground-stat">
+        <dt>128K ISDN</dt>
+        <dd><strong data-stat="isdn">0.0</strong><span class="playground-stat-unit">seconds</span></dd>
+        <div class="playground-stat-note">to download</div>
+      </div>
+    </dl>
+    <dl class="playground-stats-row playground-stats-row--modern">
+      <div class="playground-stat">
+        <dt>Modern CSS equivalent</dt>
+        <dd>~<strong data-stat="modernBytes">0</strong><span class="playground-stat-unit">bytes</span></dd>
+        <div class="playground-stat-note">&lt;0.1s on any connection</div>
+      </div>
+    </dl>
+  </div>
+</figure>
+
+<style is:global>
+  .spacer-playground {
+    margin: var(--space-l) 0;
+  }
+  .spacer-playground figcaption {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-m);
+  }
+  .playground-controls {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--color-surface-muted, var(--color-bg));
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    margin-bottom: var(--space-m);
+  }
+  .playground-slider {
+    display: grid;
+    grid-template-columns: 8rem 1fr 3.5rem;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    min-height: 1.75rem;
+  }
+  .playground-slider-label,
+  .playground-toggle > span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .playground-slider input[type="range"] {
+    width: 100%;
+    margin: 0;
+    accent-color: var(--color-accent, #0066cc);
+  }
+  .playground-slider-value {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    text-align: right;
+    font-weight: 600;
+  }
+  .playground-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    min-height: 1.75rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .playground-toggle input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    accent-color: var(--color-accent, #0066cc);
+    cursor: pointer;
+  }
+  @media (max-width: 520px) {
+    .playground-slider {
+      grid-template-columns: 1fr auto;
+      gap: 0.25rem 0.75rem;
+    }
+    .playground-slider-label {
+      grid-column: 1 / -1;
+    }
+    .playground-slider input[type="range"] {
+      grid-column: 1;
+    }
+    .playground-slider-value {
+      grid-column: 2;
+    }
+  }
+
+  .playground-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-m);
+  }
+  @media (min-width: 900px) {
+    .playground-split {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .playground-panel {
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--color-bg);
+  }
+  .playground-panel-label {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface-muted, var(--color-bg));
+  }
+  .playground-preview {
+    padding: var(--space-m);
+    overflow-x: auto;
+  }
+  .playground-source {
+    --pg-syntax-tag: #0550ae;
+    --pg-syntax-attr: #953800;
+    --pg-syntax-value: #0a3622;
+    --pg-syntax-punct: #6e7781;
+    --pg-syntax-comment: #6e7781;
+    --pg-syntax-gutter: rgba(0, 0, 0, 0.04);
+    --pg-syntax-linenum: #8c959f;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    overflow-x: auto;
+    background: var(--color-bg);
+    color: var(--color-text);
+    counter-reset: pg-line;
+  }
+  @media (prefers-color-scheme: dark) {
+    .playground-source {
+      --pg-syntax-tag: #79c0ff;
+      --pg-syntax-attr: #ffa657;
+      --pg-syntax-value: #a5d6ff;
+      --pg-syntax-punct: #8b949e;
+      --pg-syntax-comment: #8b949e;
+      --pg-syntax-gutter: rgba(255, 255, 255, 0.04);
+      --pg-syntax-linenum: #6e7681;
+    }
+  }
+  .playground-source code {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  .playground-source .pg-ln {
+    counter-increment: pg-line;
+    display: block;
+    padding: 0 0.9rem 0 3.25rem;
+    position: relative;
+    white-space: pre;
+  }
+  .playground-source .pg-ln::before {
+    content: counter(pg-line);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2.5rem;
+    padding-right: 0.6rem;
+    text-align: right;
+    color: var(--pg-syntax-linenum);
+    background: var(--pg-syntax-gutter);
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+  }
+  .playground-source .pg-t { color: var(--pg-syntax-tag); }
+  .playground-source .pg-a { color: var(--pg-syntax-attr); }
+  .playground-source .pg-v { color: var(--pg-syntax-value); }
+  .playground-source .pg-p { color: var(--pg-syntax-punct); }
+  .playground-source .pg-c { color: var(--pg-syntax-comment); font-style: italic; }
+  .playground-source .pg-hl {
+    background: #fff8c5;
+    border-radius: 3px;
+    padding: 0 0.15em;
+    box-shadow: 0 0 0 1px #eac54f inset;
+  }
+  @media (prefers-color-scheme: dark) {
+    .playground-source .pg-hl {
+      background: rgba(187, 128, 9, 0.35);
+      box-shadow: 0 0 0 1px rgba(187, 128, 9, 0.6) inset;
+    }
+  }
+
+  .playground-stats {
+    margin: var(--space-m) 0 0;
+    background: var(--color-surface-muted, var(--color-bg));
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-variant-numeric: tabular-nums;
+  }
+  .playground-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0;
+    padding: 0;
+  }
+  .playground-stats-row--modern {
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-accent, #0066cc) 6%, transparent);
+  }
+  .playground-stat {
+    margin: 0;
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    position: relative;
+  }
+  .playground-stat + .playground-stat::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.9rem;
+    bottom: 0.9rem;
+    width: 1px;
+    background: var(--color-border);
+  }
+  .playground-stat dt {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+  .playground-stat dd {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    line-height: 1;
+  }
+  .playground-stat dd strong {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+  .playground-stat-unit {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .playground-stat-note {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .playground-stats-row--modern .playground-stat dd strong {
+    color: var(--color-accent, var(--color-text));
+  }
+  @media (max-width: 560px) {
+    .playground-stats-row {
+      grid-template-columns: 1fr;
+    }
+    .playground-stat + .playground-stat::before {
+      left: 1.1rem;
+      right: 1.1rem;
+      top: 0;
+      bottom: auto;
+      width: auto;
+      height: 1px;
+    }
+  }
+
+  /* 1998-style table layout — authentic auto layout so content expands cells.
+     The spacer.gif sets a *minimum* width; text can still push columns wider,
+     breaking carefully-planned layouts. That was the whole problem. */
+  .playground-table {
+    border-collapse: collapse;
+    background: #ffffff;
+    color: #000000;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+  }
+  /* Override global th/td styling in global.css so the 1998 demo stays flat */
+  .playground-table td {
+    padding: 0;
+    border: none;
+    text-align: left;
+  }
+  .playground-table .pg-header {
+    background: #003366;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 8px 12px;
+  }
+  .playground-table .pg-cell {
+    padding: 0;
+    vertical-align: top;
+  }
+  .pg-cell-inner {
+    padding: 8px;
+  }
+  .playground-table .pg-cell--sidebar {
+    background: #eef3f8;
+  }
+  .playground-table .pg-cell--main {
+    background: #ffffff;
+  }
+  .playground-table .pg-cell--gutter {
+    background: #ffffff;
+  }
+  .playground-table a {
+    color: #0000ee;
+    text-decoration: underline;
+  }
+
+  /* The invisible spacers — transparent pixel.gifs holding layout apart */
+  .pg-spacer {
+    display: block;
+    background: transparent;
+  }
+  .pg-spacer--h {
+    height: 1px;
+  }
+  .pg-spacer--v {
+    width: 1px;
+  }
+  .pg-spacer[data-spacer="sidebar"] {
+    width: var(--pg-sidebar, 140px);
+  }
+  .pg-spacer[data-spacer="gutter"] {
+    width: var(--pg-gutter, 20px);
+  }
+  .pg-spacer[data-spacer="rowgap"] {
+    height: var(--pg-rowgap, 20px);
+  }
+
+  /* The 1×1 spacer — when tinted by the td it sits inside, it becomes a line */
+  .pg-spacer--1x1 {
+    width: 1px;
+    height: 1px;
+  }
+
+  /* Cells that act as "borders" via bgcolor + a 1×1 spacer preventing collapse */
+  .pg-line {
+    background: #003366;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+  }
+  .pg-line--h {
+    height: 1px;
+  }
+  .pg-line--v {
+    width: 1px;
+  }
+
+  /* "Show invisible spacers" — reveal the transparent gifs themselves.
+     Big spacers get the red/yellow stripe. Tiny 1×1 spacers stay as dots. */
+  .spacer-playground.show-spacers .pg-spacer {
+    background: repeating-linear-gradient(
+      45deg,
+      #ff3b30,
+      #ff3b30 3px,
+      #ffd60a 3px,
+      #ffd60a 6px
+    );
+    outline: 1px dashed #ff3b30;
+  }
+  .spacer-playground.show-spacers .pg-spacer--1x1 {
+    animation: pg-spacer-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pg-spacer-pulse {
+    0%, 100% {
+      outline-color: #ff3b30;
+      outline-width: 1px;
+      box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.5);
+    }
+    50% {
+      outline-color: #ffd60a;
+      outline-width: 2px;
+      box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.25);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spacer-playground.show-spacers .pg-spacer--1x1 {
+      animation: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pg-spacer,
+    .playground-table {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.querySelectorAll('[data-playground]').forEach(function (root) {
+    var state = { sidebar: 140, rowgap: 20, gutter: 20 };
+    var sourceEl = root.querySelector('[data-source]');
+    var statEls = {
+      bytes: root.querySelector('[data-stat="bytes"]'),
+      spacerCount: root.querySelector('[data-stat="spacerCount"]'),
+      dialup: root.querySelector('[data-stat="dialup"]'),
+      isdn: root.querySelector('[data-stat="isdn"]'),
+      modernBytes: root.querySelector('[data-stat="modernBytes"]'),
+    };
+    // A realistic modern equivalent of this whole demo layout, inline-styled:
+    // <div style="display:grid;grid-template-columns:140px 1fr 20px;gap:20px;padding:8px;border:1px solid #003366">
+    //   <header style="grid-column:1/-1;background:#003366;color:#fff;padding:8px">Welcome to MyCompany.com</header>
+    //   <nav>...</nav>
+    //   <main>...</main>
+    //   <div></div>
+    // </div>
+    var MODERN_EQUIV_BYTES = 420;
+    // 56K dial-up: ~56000 bits/s, realistic throughput ~5 KB/s after protocol overhead
+    var DIALUP_BYTES_PER_SEC = 5000;
+    // 128K ISDN: ~128000 bits/s, realistic throughput ~14 KB/s
+    var ISDN_BYTES_PER_SEC = 14000;
+
+    function setVar(key, value) {
+      state[key] = value;
+      root.style.setProperty('--pg-' + key, value + 'px');
+      var display = root.querySelector('[data-display="' + key + '"]');
+      if (display) display.textContent = value;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function highlight(line) {
+      var esc = escapeHtml(line);
+      // Comments first so their contents don't get re-tokenised as tags
+      esc = esc.replace(/&lt;!--[\s\S]*?--&gt;/g, function (m) {
+        return '<span class="pg-c">' + m + '</span>';
+      });
+      // Tags: opening, self-closing or closing
+      esc = esc.replace(/(&lt;\/?)([a-zA-Z][\w-]*)([^&]*?)(\/?&gt;)/g, function (m, open, name, attrs, close) {
+        if (m.indexOf('pg-c') !== -1) return m;
+        var isSpacerImg = name === 'img' && attrs.indexOf('spacer.gif') !== -1;
+        var attrsOut = attrs.replace(/([\w-]+)(=)(&quot;[^&]*&quot;|"[^"]*")/g, function (_, k, eq, v) {
+          return '<span class="pg-a">' + k + '</span><span class="pg-p">' + eq + '</span><span class="pg-v">' + v + '</span>';
+        });
+        var tagHtml = '<span class="pg-p">' + open + '</span><span class="pg-t">' + name + '</span>' + attrsOut + '<span class="pg-p">' + close + '</span>';
+        return isSpacerImg ? '<span class="pg-hl">' + tagHtml + '</span>' : tagHtml;
+      });
+      return esc;
+    }
+
+    function renderSource() {
+      var S = '<img src="spacer.gif" width="1" height="1" alt="">';
+      var src =
+        '<table width="600" cellpadding="0" cellspacing="0" border="0">\n' +
+        '  <!-- top frame -->\n' +
+        '  <tr><td colspan="7" bgcolor="#003366">' + S + '</td></tr>\n' +
+        '  <!-- header row -->\n' +
+        '  <tr>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '    <td colspan="5" bgcolor="#003366"><font color="#ffffff"><b>Welcome to MyCompany.com</b></font></td>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '  </tr>\n' +
+        '  <!-- row gap -->\n' +
+        '  <tr>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '    <td colspan="5"><img src="spacer.gif" width="1" height="' + state.rowgap + '" alt=""></td>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '  </tr>\n' +
+        '  <!-- divider line before content -->\n' +
+        '  <tr>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '    <td colspan="5" bgcolor="#003366">' + S + '</td>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '  </tr>\n' +
+        '  <!-- content row -->\n' +
+        '  <tr>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '    <td valign="top" bgcolor="#eef3f8">\n' +
+        '      <img src="spacer.gif" width="' + state.sidebar + '" height="1" alt="">\n' +
+        '      <br><b>Navigation</b>\n' +
+        '      <br><a href="#">Home</a>\n' +
+        '      <br><a href="#">About</a>\n' +
+        '      <br><a href="#">Products</a>\n' +
+        '      <br><a href="#">Contact</a>\n' +
+        '    </td>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '    <td valign="top">Main content...</td>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '    <td valign="top"><img src="spacer.gif" width="' + state.gutter + '" height="1" alt=""></td>\n' +
+        '    <td bgcolor="#003366">' + S + '</td>\n' +
+        '  </tr>\n' +
+        '  <!-- bottom frame -->\n' +
+        '  <tr><td colspan="7" bgcolor="#003366">' + S + '</td></tr>\n' +
+        '</table>';
+      var lines = src.split('\n').map(function (l) {
+        return '<span class="pg-ln">' + (l.length ? highlight(l) : ' ') + '</span>';
+      }).join('');
+      sourceEl.innerHTML = lines;
+
+      var bytes = new Blob([src]).size;
+      var spacerCount = (src.match(/spacer\.gif/g) || []).length;
+      statEls.bytes.textContent = bytes.toLocaleString('en-US');
+      statEls.spacerCount.textContent = spacerCount;
+      statEls.dialup.textContent = (bytes / DIALUP_BYTES_PER_SEC).toFixed(1);
+      statEls.isdn.textContent = (bytes / ISDN_BYTES_PER_SEC).toFixed(2);
+      statEls.modernBytes.textContent = MODERN_EQUIV_BYTES;
+    }
+
+    root.querySelectorAll('[data-control]').forEach(function (el) {
+      el.addEventListener('input', function () {
+        if (el.type === 'checkbox') {
+          root.classList.toggle('show-spacers', el.checked);
+        } else {
+          setVar(el.dataset.control, parseInt(el.value, 10));
+          renderSource();
+        }
+      });
+    });
+
+    setVar('sidebar', state.sidebar);
+    setVar('rowgap', state.rowgap);
+    setVar('gutter', state.gutter);
+    var showSpacers = root.querySelector('[data-control="show-spacers"]');
+    if (showSpacers && showSpacers.checked) root.classList.add('show-spacers');
+    renderSource();
+  });
+</script>

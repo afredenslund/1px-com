@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import TrustLine from '../components/TrustLine.astro';
+import SpacerPlayground from '../components/SpacerPlayground.astro';
 
 const publishDate = '2026-04-17';
 
@@ -199,6 +200,12 @@ const years = [1989, 1993, 1995, 1996, 2000, 2002, 2003, 2005, 2010, 2012, 2014,
         </div>
       </li>
     </ol>
+
+    <section class="history-playground">
+      <h2>What a layout looked like under the hood</h2>
+      <p>The timeline above tells the story. This is what it actually <em>rendered as</em> between 1995 and 2005. Drag the sliders: the spacer GIFs you see highlighted are what held every table-based site on the web together.</p>
+      <SpacerPlayground />
+    </section>
 
     <section class="history-outro">
       <h2>A piece of web archaeology</h2>

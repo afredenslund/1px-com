@@ -5,7 +5,7 @@ export default defineConfig({
   site: 'https://1px.com',
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/roadmap'),
+      filter: (page) => !page.includes('/roadmap') && !page.includes('/spacer-playground'),
     }),
   ],
   output: 'static',
