@@ -243,9 +243,9 @@
     --pg-syntax-linenum: #8c959f;
     margin: 0;
     padding: 0;
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 1.1vw, 0.82rem);
     line-height: 1.55;
-    overflow-x: auto;
+    overflow: hidden;
     background: var(--color-bg);
     color: var(--color-text);
     counter-reset: pg-line;
@@ -270,7 +270,8 @@
     display: block;
     padding: 0 0.9rem 0 3.25rem;
     position: relative;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
   .playground-source .pg-ln::before {
     content: counter(pg-line);
