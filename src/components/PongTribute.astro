@@ -16,10 +16,6 @@
     <div class="pong-paddle" data-pong-paddle-right></div>
     <div class="pong-ball" data-pong-ball></div>
   </div>
-  <div class="pong-text">
-    <h3>Pong, 1972</h3>
-    <p>The first arcade hit was four paddles, a ball, and a line &mdash; all drawn in pixels. <strong>1px.com</strong> belongs to the same lineage.</p>
-  </div>
 </article>
 
 <style>
@@ -27,11 +23,11 @@
     padding: 0;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
+    min-height: 100%;
   }
   .pong-stage {
     position: relative;
-    aspect-ratio: 16 / 9;
+    flex: 1;
     background: #000;
     overflow: hidden;
     image-rendering: pixelated;
@@ -74,10 +70,6 @@
     top: 0;
     background: #fff;
     will-change: transform;
-  }
-  .pong-text {
-    padding: var(--space-md);
-    border-top: var(--border);
   }
   .pong-card:hover .pong-stage {
     /* A subtle hover nod — CRT phosphor bloom */
