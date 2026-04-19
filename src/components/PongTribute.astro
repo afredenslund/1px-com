@@ -1,0 +1,272 @@
+---
+// Visual tribute card: a tiny JS-driven Pong running forever with
+// randomised physics so no two serves look the same. Pauses when
+// scrolled out of view or the tab is hidden; freezes a single frame
+// under prefers-reduced-motion.
+---
+
+<article class="content-card pong-card" aria-label="Pong, 1972 — a pixel-game tribute">
+  <div class="pong-stage" data-pong aria-hidden="true">
+    <div class="pong-score">
+      <span data-pong-score-left>0</span>
+      <span data-pong-score-right>0</span>
+    </div>
+    <div class="pong-centerline"></div>
+    <div class="pong-paddle" data-pong-paddle-left></div>
+    <div class="pong-paddle" data-pong-paddle-right></div>
+    <div class="pong-ball" data-pong-ball></div>
+  </div>
+  <div class="pong-text">
+    <h3>Pong, 1972</h3>
+    <p>The first arcade hit was four paddles, a ball, and a line &mdash; all drawn in pixels. <strong>1px.com</strong> belongs to the same lineage.</p>
+  </div>
+</article>
+
+<style>
+  .pong-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .pong-stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    image-rendering: pixelated;
+    font-family: "Courier New", ui-monospace, monospace;
+  }
+  .pong-score {
+    position: absolute;
+    inset: 8% 0 auto 0;
+    display: flex;
+    justify-content: space-around;
+    color: #fff;
+    font-size: clamp(1rem, 3.2vw, 1.8rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    line-height: 1;
+    text-shadow: 0 0 1px #fff;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .pong-score > span {
+    width: 40%;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .pong-centerline {
+    position: absolute;
+    top: 4%;
+    bottom: 4%;
+    left: 50%;
+    width: 2px;
+    margin-left: -1px;
+    background-image: linear-gradient(to bottom, #fff 0 50%, transparent 50% 100%);
+    background-size: 2px 12px;
+    background-repeat: repeat-y;
+  }
+  .pong-paddle,
+  .pong-ball {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #fff;
+    will-change: transform;
+  }
+  .pong-text {
+    padding: var(--space-md);
+    border-top: var(--border);
+  }
+  .pong-card:hover .pong-stage {
+    /* A subtle hover nod — CRT phosphor bloom */
+    box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pong-ball,
+    .pong-paddle {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var stages = document.querySelectorAll('[data-pong]');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    stages.forEach(function (stage) {
+      var ball = stage.querySelector('[data-pong-ball]');
+      var pL = stage.querySelector('[data-pong-paddle-left]');
+      var pR = stage.querySelector('[data-pong-paddle-right]');
+      var scoreL = stage.querySelector('[data-pong-score-left]');
+      var scoreR = stage.querySelector('[data-pong-score-right]');
+
+      // Chunky pixel step — positions are rounded to multiples of this
+      var PIXEL = 3;
+      // Paddle AI: how fast paddles drift toward the ball (per paddle, so
+      // each side can feel slightly different and imperfect).
+      var AI_L = 1.6 + Math.random() * 0.9;
+      var AI_R = 1.6 + Math.random() * 0.9;
+      // Geometry, all in percent of stage
+      var PADDLE_W = 1.8;
+      var PADDLE_H = 22;
+      var BALL = 3;
+      var LEFT_X = 6;
+      var RIGHT_X = 100 - 6 - PADDLE_W;
+
+      var state = {
+        ball: { x: 50, y: 50, vx: 0, vy: 0 },
+        pL: { y: 40 },
+        pR: { y: 40 },
+        score: { l: 0, r: 0 },
+      };
+
+      function serve(fromSide) {
+        state.ball.x = 50;
+        state.ball.y = 20 + Math.random() * 60;
+        // Random angle ±25° with a small dead-zone to avoid dead horizontal
+        var angle = (Math.random() * 0.85 - 0.425);
+        if (Math.abs(angle) < 0.08) angle += angle < 0 ? -0.08 : 0.08;
+        var speed = 42 + Math.random() * 22; // % per second
+        var dir = fromSide === 'left' ? 1 : -1;
+        state.ball.vx = Math.cos(angle) * speed * dir;
+        state.ball.vy = Math.sin(angle) * speed;
+      }
+
+      function clampSpeed() {
+        var s = Math.hypot(state.ball.vx, state.ball.vy);
+        var MAX = 95;
+        if (s > MAX) {
+          state.ball.vx *= MAX / s;
+          state.ball.vy *= MAX / s;
+        }
+      }
+
+      serve(Math.random() < 0.5 ? 'left' : 'right');
+
+      var running = false;
+      var rafId = 0;
+      var lastT = 0;
+
+      function step(t) {
+        if (!lastT) lastT = t;
+        var dt = Math.min(0.05, (t - lastT) / 1000);
+        lastT = t;
+
+        var b = state.ball;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+
+        // Top / bottom walls
+        if (b.y < 0) { b.y = 0; b.vy = -b.vy; }
+        if (b.y > 100 - BALL) { b.y = 100 - BALL; b.vy = -b.vy; }
+
+        // Paddle tracking with imperfection — each paddle gets a slightly
+        // offset target so the game never converges on a perfect rally.
+        var bCenter = b.y + BALL / 2;
+        var tgtL = bCenter - PADDLE_H / 2 + (Math.sin(t / 900) * 6);
+        var tgtR = bCenter - PADDLE_H / 2 + (Math.sin(t / 760 + 1.1) * 6);
+        state.pL.y += (tgtL - state.pL.y) * Math.min(1, dt * AI_L);
+        state.pR.y += (tgtR - state.pR.y) * Math.min(1, dt * AI_R);
+        state.pL.y = Math.max(0, Math.min(100 - PADDLE_H, state.pL.y));
+        state.pR.y = Math.max(0, Math.min(100 - PADDLE_H, state.pR.y));
+
+        // Left paddle collision
+        if (b.vx < 0 && b.x <= LEFT_X + PADDLE_W && b.x + BALL >= LEFT_X) {
+          if (b.y + BALL >= state.pL.y && b.y <= state.pL.y + PADDLE_H) {
+            b.x = LEFT_X + PADDLE_W;
+            b.vx = -b.vx * (1.02 + Math.random() * 0.05);
+            var offL = (b.y + BALL / 2) - (state.pL.y + PADDLE_H / 2);
+            b.vy += offL * 1.8 + (Math.random() - 0.5) * 8;
+            clampSpeed();
+          }
+        }
+        // Right paddle collision
+        if (b.vx > 0 && b.x + BALL >= RIGHT_X && b.x <= RIGHT_X + PADDLE_W) {
+          if (b.y + BALL >= state.pR.y && b.y <= state.pR.y + PADDLE_H) {
+            b.x = RIGHT_X - BALL;
+            b.vx = -b.vx * (1.02 + Math.random() * 0.05);
+            var offR = (b.y + BALL / 2) - (state.pR.y + PADDLE_H / 2);
+            b.vy += offR * 1.8 + (Math.random() - 0.5) * 8;
+            clampSpeed();
+          }
+        }
+
+        // Out of bounds — score + re-serve the other way
+        if (b.x < -BALL * 2) {
+          state.score.r = (state.score.r + 1) % 10;
+          scoreR.textContent = state.score.r;
+          serve('right');
+        } else if (b.x > 100 + BALL * 2) {
+          state.score.l = (state.score.l + 1) % 10;
+          scoreL.textContent = state.score.l;
+          serve('left');
+        }
+
+        render();
+        if (running) rafId = requestAnimationFrame(step);
+      }
+
+      function render() {
+        var w = stage.clientWidth;
+        var h = stage.clientHeight;
+        if (!w || !h) return;
+        var ballPx = Math.max(PIXEL * 2, Math.round((w * BALL) / 100));
+        var padW = Math.max(PIXEL, Math.round((w * PADDLE_W) / 100));
+        var padH = Math.round((h * PADDLE_H) / 100);
+        var bx = Math.round((state.ball.x * w) / 100 / PIXEL) * PIXEL;
+        var by = Math.round((state.ball.y * h) / 100 / PIXEL) * PIXEL;
+        var lx = Math.round((LEFT_X * w) / 100 / PIXEL) * PIXEL;
+        var rx = Math.round((RIGHT_X * w) / 100 / PIXEL) * PIXEL;
+        var ly = Math.round((state.pL.y * h) / 100 / PIXEL) * PIXEL;
+        var ry = Math.round((state.pR.y * h) / 100 / PIXEL) * PIXEL;
+
+        ball.style.width = ballPx + 'px';
+        ball.style.height = ballPx + 'px';
+        ball.style.transform = 'translate(' + bx + 'px,' + by + 'px)';
+        pL.style.width = padW + 'px';
+        pL.style.height = padH + 'px';
+        pL.style.transform = 'translate(' + lx + 'px,' + ly + 'px)';
+        pR.style.width = padW + 'px';
+        pR.style.height = padH + 'px';
+        pR.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+      }
+
+      function start() {
+        if (running || reduceMotion) return;
+        running = true;
+        lastT = 0;
+        rafId = requestAnimationFrame(step);
+      }
+      function stop() {
+        running = false;
+        if (rafId) cancelAnimationFrame(rafId);
+      }
+
+      // One render even under reduced motion so the scene isn't empty
+      render();
+      if (reduceMotion) return;
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) start();
+            else stop();
+          });
+        }, { threshold: 0 });
+        io.observe(stage);
+      } else {
+        start();
+      }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) stop();
+      });
+
+      window.addEventListener('resize', render, { passive: true });
+    });
+  })();
+</script>
